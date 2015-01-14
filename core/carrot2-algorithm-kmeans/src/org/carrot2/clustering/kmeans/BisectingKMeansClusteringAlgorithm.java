@@ -439,7 +439,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
                 }
             }
 
-            if (it < iterations - 1)
+            //if (it < iterations - 1) srmq
             {
                 previousResult = result;
                 result = Lists.newArrayList();
