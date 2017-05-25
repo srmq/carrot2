@@ -18,12 +18,10 @@
       See http://www.carrot2.org/carrot2.LICENSE for license.
    </license>
 
-   <includes
-         id="org.carrot2.workbench.core.feature"
-         version="0.0.0"/>
+   <includes id="org.carrot2.workbench.core.feature" version="0.0.0" />
 
    <requires>
-      <import feature="org.eclipse.rcp" version="3.4.1" match="compatible"/>
+      <import feature="org.eclipse.rcp" version="4.6.0" match="compatible"/>
    </requires>
 
    <plugin
@@ -84,13 +82,6 @@
 
    <plugin
          id="org.carrot2.source.solr"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.carrot2.source.google.api"
          download-size="0"
          install-size="0"
          version="0.0.0"

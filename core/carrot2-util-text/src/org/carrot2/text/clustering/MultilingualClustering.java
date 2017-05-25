@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -20,10 +20,10 @@ import org.carrot2.util.attribute.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
-import com.google.common.collect.Multiset.Entry;
+import org.carrot2.shaded.guava.common.base.Function;
+import org.carrot2.shaded.guava.common.base.Predicate;
+import org.carrot2.shaded.guava.common.collect.*;
+import org.carrot2.shaded.guava.common.collect.Multiset.Entry;
 
 /**
  * A helper for clustering multilingual collections of documents. The helper partitions
@@ -131,7 +131,8 @@ public class MultilingualClustering
     
     /**
      * Majority language.
-     * If {@link #languageAggregationStrategy} is {@link LanguageAggregationStrategy#CLUSTER_IN_MAJORITY_LANGUAGE},
+     * If {@link #languageAggregationStrategy} is 
+     * {@link org.carrot2.text.clustering.MultilingualClustering.LanguageAggregationStrategy#CLUSTER_IN_MAJORITY_LANGUAGE},
      * this attribute will provide the majority language that was used to cluster all the documents.
      * If the majority of the documents have undefined language, this attribute will be 
      * empty and the clustering will be performed in the {@link #defaultLanguage}.

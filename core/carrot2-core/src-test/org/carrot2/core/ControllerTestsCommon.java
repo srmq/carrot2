@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -17,9 +17,11 @@ import static org.easymock.EasyMock.isA;
 import static org.fest.assertions.MapAssert.entry;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -27,16 +29,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
+import org.carrot2.core.attribute.Processing;
+import org.carrot2.util.attribute.Attribute;
+import org.carrot2.util.attribute.Bindable;
+import org.carrot2.util.attribute.Input;
 import org.carrot2.util.attribute.Output;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.carrotsearch.randomizedtesting.annotations.Nightly;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import org.carrot2.shaded.guava.common.collect.ImmutableMap;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Sets;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests common functionality of a {@link Controller}. The fact that we need to resort to
@@ -333,7 +341,7 @@ public abstract class ControllerTestsCommon extends ControllerTestsBase
         final long c2Time = 500;
         final long c3Time = 750;
         final long totalTime = c1Time + c2Time + c3Time;
-        final double tolerance = 0.5;
+        final double tolerance = 1;
 
         mocksControl.resetToNice();
 
@@ -446,9 +454,9 @@ public abstract class ControllerTestsCommon extends ControllerTestsBase
             ComponentWithInitParameter.class.getName());
         final ProcessingResult resultById = controller.process(attributes, "component");
 
-        assertThat(resultByClass.getAttribute("result")).isEqualTo("defaultdefault");
-        assertThat(resultByClassName.getAttribute("result")).isEqualTo("defaultdefault");
-        assertThat(resultById.getAttribute("result")).isEqualTo("defaultdefault");
+        assertThat((String) resultByClass.getAttribute("result")).isEqualTo("defaultdefault");
+        assertThat((String) resultByClassName.getAttribute("result")).isEqualTo("defaultdefault");
+        assertThat((String) resultById.getAttribute("result")).isEqualTo("defaultdefault");
 
         controller.dispose();
         controller = null;
@@ -678,6 +686,57 @@ public abstract class ControllerTestsCommon extends ControllerTestsBase
 
         performProcessingDisposeAndVerifyMocks(Component1.class);
         assertEquals("dir", resultAttributes.get("data"));
+    }
+
+    @Bindable
+    public static class ComponentWithMapParameter extends ProcessingComponentBase
+    {
+        @Input
+        @Processing
+        @Attribute(key = "other")
+        public Map<String,String> other;
+
+        @Output
+        @Processing
+        @Attribute(key = "result")
+        public String result;
+
+        @Override
+        public void process() throws ProcessingException
+        {
+            result = new TreeMap<>(other).toString();
+        }
+    }
+
+    @Test
+    public void testMapWithKeysAttribute()
+    {
+        Map<String, String> map1 = new HashMap<String, String>();
+        map1.put("k1", "v1");
+        map1.put("k2", "v2");
+
+        processingAttributes.put("other", map1);
+        ProcessingResult pr = performProcessing(ComponentWithMapParameter.class);
+        assertThat((Object) pr.getAttribute("result")).isEqualTo("{k1=v1, k2=v2}");
+
+        if (isCaching())
+        {
+            pr = performProcessing(ComponentWithMapParameter.class);
+            assertThat((String) pr.getAttribute("result")).isEqualTo("{k1=v1, k2=v2}");
+
+            final ControllerStatistics statistics = controller.getStatistics();
+            assertThat(statistics.cacheMisses).isEqualTo(1);
+            assertThat(statistics.cacheHitsTotal).isEqualTo(1);
+        }
+
+        Map<String, String> map2 = new HashMap<String, String>();
+        map2.putAll(map1);
+        map1.put("k1", "v1_2");
+        pr = performProcessing(ComponentWithMapParameter.class);
+        assertThat((Object) pr.getAttribute("result")).isEqualTo("{k1=v1_2, k2=v2}");
+        
+        controller.dispose();
+        controller = null;
     }
 
     /**

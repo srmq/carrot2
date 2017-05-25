@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,17 +12,16 @@
 
 package org.carrot2.matrix.factorization;
 
-import org.apache.mahout.math.function.Functions;
-import org.apache.mahout.math.function.Mult;
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.carrot2.mahout.math.function.Functions;
+import org.carrot2.mahout.math.function.Mult;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.matrix.MatrixUtils;
 
 /**
  * Performs matrix factorization using the K-means clustering algorithm. This kind of
  * factorization is sometimes referred to as Concept Decomposition Factorization.
  */
-@SuppressWarnings("deprecation")
 public class KMeansMatrixFactorization extends IterativeMatrixFactorizationBase
 {
     /**

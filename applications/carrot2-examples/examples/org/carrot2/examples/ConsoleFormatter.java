@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -103,7 +103,7 @@ public class ConsoleFormatter
         final String indent = getIndent(level);
 
         System.out.printf(indent + "[%2s] ", document.getStringId());
-        System.out.println(document.getField(Document.TITLE));
+        System.out.println((Object) document.getField(Document.TITLE));
         final String url = document.getField(Document.CONTENT_URL);
         if (StringUtils.isNotBlank(url))
         {

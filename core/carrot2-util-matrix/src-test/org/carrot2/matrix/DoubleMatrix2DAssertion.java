@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -16,13 +16,11 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import org.fest.assertions.AssertExtension;
 import org.fest.assertions.Delta;
-
-import org.apache.mahout.math.matrix.*;
+import org.carrot2.mahout.math.matrix.*;
 
 /**
  * Assertions on <code>DoubleMatrix2D</code>.
  */
-@SuppressWarnings("deprecation")
 public class DoubleMatrix2DAssertion implements AssertExtension
 {
     /** The actual matrix */

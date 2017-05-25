@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -49,7 +49,7 @@ import org.carrot2.util.resource.IResource;
 public abstract class RemoteXmlSimpleSearchEngineBase extends SimpleSearchEngine
 {
     /** A helper class that groups common functionality for XML/XSLT based data sources. */
-    private final XmlDocumentSourceHelper xmlDocumentSourceHelper = new XmlDocumentSourceHelper();
+    public final XmlDocumentSourceHelper xmlDocumentSourceHelper = new XmlDocumentSourceHelper();
 
     /**
      * HTTP redirect response strategy (follow or throw an error).

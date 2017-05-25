@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -22,19 +22,19 @@ public abstract class DelegatingProcessingComponent implements IProcessingCompon
     @Init
     @Input
     @Attribute(key = "instanceAttribute")
-    private String instanceAttribute = "";
+    public String instanceAttribute = "";
 
     @Processing
     @Input
     @Attribute(key = "runtimeAttribute")
-    private String runtimeAttribute = "";
+    public String runtimeAttribute = "";
 
     @Processing
     @Input
     @Output
     @Required
     @Attribute(key = "data")
-    private String data = null;
+    public String data = null;
 
     public void init(IControllerContext context)
     {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -46,9 +46,9 @@ import org.carrot2.util.resource.IResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.base.Predicate;
+import org.carrot2.shaded.guava.common.collect.ImmutableSet;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * An {@link IProcessingComponentManager} that pools instances of processing components.
@@ -170,7 +170,6 @@ public class PoolingProcessingComponentManager implements IProcessingComponentMa
     private final class ComponentInstantiationListener implements
         IInstantiationListener<IProcessingComponent, String>
     {
-        @SuppressWarnings("unchecked")
         public void objectInstantiated(IProcessingComponent component, String parameter)
         {
             try
@@ -366,7 +365,6 @@ public class PoolingProcessingComponentManager implements IProcessingComponentMa
          */
         private ConcurrentHashMap<ReferenceEquality, Map<String, Object>> resetValues = new ConcurrentHashMap<ReferenceEquality, Map<String, Object>>();
 
-        @SuppressWarnings("unchecked")
         public void activate(IProcessingComponent processingComponent, String parameter)
         {
             // Remember values of @Input @Processing attributes
@@ -385,7 +383,6 @@ public class PoolingProcessingComponentManager implements IProcessingComponentMa
             }
         }
 
-        @SuppressWarnings("unchecked")
         public void passivate(IProcessingComponent processingComponent, String parameter)
         {
             // Reset values of @Input @Processing attributes back to original values

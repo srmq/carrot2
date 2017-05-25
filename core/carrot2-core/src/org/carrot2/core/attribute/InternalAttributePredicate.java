@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -14,7 +14,7 @@ package org.carrot2.core.attribute;
 
 import org.carrot2.util.attribute.AttributeDescriptor;
 
-import com.google.common.base.Predicate;
+import org.carrot2.shaded.guava.common.base.Predicate;
 
 /**
  * A predicate that tests whether an {@link AttributeDescriptor} refers to an

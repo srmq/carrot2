@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -11,6 +11,7 @@
  */
 
 package org.carrot2.util;
+
 
 /**
  * Utilities related to Java reflection.
@@ -44,17 +45,36 @@ public final class ReflectionUtils
     {
         try
         {
-            return Class.forName(clazzName, true, Thread.currentThread()
-                .getContextClassLoader());
+            ClassLoader cl = Thread.currentThread().getContextClassLoader();
+            if (cl != null) {              
+              return Class.forName(clazzName, true, cl);
+            }
         }
-        catch (ClassNotFoundException e)
+        catch (SecurityException e)
         {
             if (logWarning)
             {
-                org.slf4j.LoggerFactory.getLogger(ReflectionUtils.class).warn(
-                    "Could not load class: " + clazzName + " (" + e.getMessage() + ").");
+              org.slf4j.LoggerFactory.getLogger(ReflectionUtils.class).warn(
+                  "Could not access CCL.", e);
             }
-            throw e;
+        }
+        catch (ClassNotFoundException e)
+        {
+            // Retry with our CL.
+        }
+
+        try
+        {
+          return Class.forName(clazzName, true, ReflectionUtils.class.getClassLoader());
+        }
+        catch (Exception e)
+        {
+          if (logWarning)
+          {
+              org.slf4j.LoggerFactory.getLogger(ReflectionUtils.class).warn(
+                  "Could not load class: " + clazzName + " (" + e.getMessage() + ").", e);
+          }
+          throw e;
         }
     }
 }

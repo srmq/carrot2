@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -22,9 +22,9 @@ import org.carrot2.util.ExceptionUtils;
 import org.carrot2.util.Pair;
 import org.carrot2.util.attribute.*;
 
-import com.google.common.cache.*;
-import com.google.common.collect.*;
-import com.google.common.util.concurrent.UncheckedExecutionException;
+import org.carrot2.shaded.guava.common.cache.*;
+import org.carrot2.shaded.guava.common.collect.*;
+import org.carrot2.shaded.guava.common.util.concurrent.UncheckedExecutionException;
 
 /**
  * An {@link IProcessingComponentManager} that implements processing results caching
@@ -78,6 +78,7 @@ public class CachingProcessingComponentManager implements IProcessingComponentMa
      *            If {@link IProcessingComponent} is provided here, output of all
      *            components will be cached.
      */
+    @SafeVarargs
     public CachingProcessingComponentManager(IProcessingComponentManager delegate,
         Class<? extends IProcessingComponent>... cachedComponentClasses)
     {
@@ -257,7 +258,6 @@ public class CachingProcessingComponentManager implements IProcessingComponentMa
          * {@link Output} {@link Processing} attributes of the component whose results
          * will be cached.
          */
-        @SuppressWarnings("unchecked")
         private InputOutputAttributeDescriptors prepareAttributeDescriptors()
         {
             InputOutputAttributeDescriptors descriptors = null;

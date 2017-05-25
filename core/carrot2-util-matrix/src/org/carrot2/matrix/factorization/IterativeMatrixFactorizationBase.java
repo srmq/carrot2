@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,8 +12,8 @@
 
 package org.carrot2.matrix.factorization;
 
-import org.apache.mahout.math.function.Functions;
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.function.Functions;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
 import org.carrot2.matrix.MatrixUtils;
 import org.carrot2.matrix.factorization.seeding.ISeedingStrategy;
 import org.carrot2.matrix.factorization.seeding.RandomSeedingStrategy;
@@ -23,7 +23,6 @@ import com.carrotsearch.hppc.sorting.IndirectComparator;
 /**
  * Base functionality for {@link IIterativeMatrixFactorization}s.
  */
-@SuppressWarnings("deprecation")
 abstract class IterativeMatrixFactorizationBase extends MatrixFactorizationBase implements
     IIterativeMatrixFactorization
 {
@@ -67,7 +66,6 @@ abstract class IterativeMatrixFactorizationBase extends MatrixFactorizationBase 
     protected double [] aggregates;
 
     /**
-     * @param A
      */
     public IterativeMatrixFactorizationBase(DoubleMatrix2D A)
     {
@@ -205,10 +203,6 @@ abstract class IterativeMatrixFactorizationBase extends MatrixFactorizationBase 
     }
 
     /**
-     * Returns final approximation error or -1 if the approximation error calculation has
-     * been turned off (see {@link #setMaxIterations(int)}.
-     * 
-     * @return final approximation error or -1
      */
     public double getApproximationError()
     {
@@ -216,10 +210,6 @@ abstract class IterativeMatrixFactorizationBase extends MatrixFactorizationBase 
     }
 
     /**
-     * Returns an array of approximation errors during after subsequent iterations of the
-     * algorithm. Element 0 of the array contains the approximation error before the first
-     * iteration. The array is <code>null</code> if the approximation error calculation
-     * has been turned off (see {@link #setMaxIterations(int)}.
      */
     public double [] getApproximationErrors()
     {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -14,6 +14,7 @@ package org.carrot2.examples.clustering;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,6 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.carrot2.clustering.lingo.LingoClusteringAlgorithm;
 import org.carrot2.core.Controller;
 import org.carrot2.core.ControllerFactory;
@@ -38,7 +38,7 @@ import org.carrot2.source.lucene.SimpleFieldMapper;
 import org.carrot2.util.annotations.ThreadSafe;
 import org.carrot2.util.attribute.IObjectFactory;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * This example shows how to apply custom processing to documents returned by the
@@ -97,7 +97,7 @@ public class ClusteringDataFromLuceneWithCustomFields
 
         LuceneDocumentSourceDescriptor
             .attributeBuilder(luceneGlobalAttributes)
-            .directory(FSDirectory.open(new File(indexPath)));
+            .directory(FSDirectory.open(Paths.get(indexPath)));
 
         /*
          * In ClusteringDataFromLucene we used a simple configuration of
@@ -162,11 +162,10 @@ public class ClusteringDataFromLuceneWithCustomFields
      * A wrapper class producing {@link StandardAnalyzer} instances.
      */
     public static final class StandardAnalyzerFactory implements IObjectFactory<Analyzer> {
-        @SuppressWarnings("deprecation")
         @Override
         public Analyzer create()
         {
-            return new StandardAnalyzer(Version.LUCENE_CURRENT);
+            return new StandardAnalyzer();
         }
     }
 

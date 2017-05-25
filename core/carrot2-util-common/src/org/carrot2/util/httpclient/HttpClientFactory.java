@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -31,6 +31,7 @@ import org.apache.http.params.CoreConnectionPNames;
  * no need to configure per-connection proxy). No custom proxy authorization methods are
  * implemented as of yet.
  */
+@SuppressWarnings("deprecation")
 public final class HttpClientFactory
 {
     private static final String PROPERTY_NAME_PROXY_HOST = "http.proxyhost";

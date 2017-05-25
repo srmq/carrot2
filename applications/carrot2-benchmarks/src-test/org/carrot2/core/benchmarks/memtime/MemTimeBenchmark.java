@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -48,7 +48,7 @@ import org.simpleframework.xml.core.Persister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * Compute approximate memory and time characteristic for a given algorithm and input.
@@ -267,8 +267,7 @@ public class MemTimeBenchmark
         try
         {
             Directory dir = new RAMDirectory();
-            @SuppressWarnings("deprecation")
-            IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_CURRENT, new StandardAnalyzer(Version.LUCENE_CURRENT));
+            IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
             IndexWriter w = new IndexWriter(dir, config);
 
             for (Document d : inputList)

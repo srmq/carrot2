@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,14 +12,12 @@
 
 package org.carrot2.matrix.factorization.seeding;
 
+import org.carrot2.mahout.math.matrix.*;
 import org.carrot2.matrix.factorization.KMeansMatrixFactorization;
-
-import org.apache.mahout.math.matrix.*;
 
 /**
  * Matrix seeding based on the k-means algorithms.
  */
-@SuppressWarnings("deprecation")
 public class KMeansSeedingStrategy implements ISeedingStrategy
 {
     /** The maximum number of KMeans iterations */

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -92,7 +92,6 @@ public final class SearchInputFactory implements IElementFactory
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     static void saveState(SearchInput search, IMemento memento)
     {
         memento.createChild(SOURCE_ELEMENT).putString(ID_ATTRIBUTE, search.getSourceId());

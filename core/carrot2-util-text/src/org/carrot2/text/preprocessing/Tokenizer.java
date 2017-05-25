@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -42,7 +42,7 @@ import org.carrot2.util.attribute.Level;
 import com.carrotsearch.hppc.ByteArrayList;
 import com.carrotsearch.hppc.IntArrayList;
 import com.carrotsearch.hppc.ShortArrayList;
-import com.google.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Lists;
 
 /**
  * Performs tokenization of documents.

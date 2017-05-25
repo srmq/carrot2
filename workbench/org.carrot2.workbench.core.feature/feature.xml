@@ -18,7 +18,7 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.rcp" version="3.4.1" match="compatible"/>
+      <import feature="org.eclipse.rcp" version="4.3.2" match="compatible"/>
    </requires>
 
    <plugin
@@ -29,7 +29,7 @@
          unpack="false"/>
 
    <plugin
-         id="com.google.guava"
+         id="org.carrot2.shaded.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -240,24 +240,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.core.filesystem.solaris.sparc"
-         os="solaris"
-         arch="sparc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
          id="org.carrot2.text"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.mahout"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -278,7 +261,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.codehaus.jackson"
+         id="com.fasterxml.jackson"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -286,13 +269,6 @@
 
    <plugin
          id="net.java.dev.rome"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jdom"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -368,4 +344,45 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.eclipse.emf.ecore"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.workbench"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.ecore.change"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.ecore.xmi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.themes"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="true" />
 </feature>

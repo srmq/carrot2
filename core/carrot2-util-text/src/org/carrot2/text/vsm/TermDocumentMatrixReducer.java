@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,9 +12,9 @@
 
 package org.carrot2.text.vsm;
 
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.core.attribute.Processing;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.matrix.MatrixUtils;
 import org.carrot2.matrix.factorization.IMatrixFactorization;
 import org.carrot2.matrix.factorization.IMatrixFactorizationFactory;
@@ -40,7 +40,6 @@ import org.carrot2.util.attribute.constraint.ImplementingClasses;
  * Reduces the dimensionality of a term-document matrix using a matrix factorization
  * algorithm.
  */
-@SuppressWarnings("deprecation")
 @Bindable(prefix = "TermDocumentMatrixReducer")
 public class TermDocumentMatrixReducer
 {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.ViewPart;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * A view displaying short help based on the {@link AttributeDescriptor}.
@@ -106,7 +106,7 @@ public class AttributeInfoView extends ViewPart
     private void createToolbar(IToolBarManager toolBarManager)
     {
         final IAction action = new ActionDelegateProxy(new AttributeInfoSyncAction(), SWT.TOGGLE);
-        action.setImageDescriptor(WorkbenchCorePlugin.getImageDescriptor("icons/help-sync.gif"));
+        action.setImageDescriptor(WorkbenchCorePlugin.getImageDescriptor("icons/help-sync.png"));
         action.setToolTipText("Update when attribute tooltip is shown.");
 
         toolBarManager.add(action);

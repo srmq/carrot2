@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -31,9 +31,9 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.core.Persister;
 import org.slf4j.Logger;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.*;
+import org.carrot2.shaded.guava.common.base.Predicate;
+import org.carrot2.shaded.guava.common.base.Predicates;
+import org.carrot2.shaded.guava.common.collect.*;
 
 /**
  * The application-wide configuration.
@@ -227,7 +227,6 @@ public class WebappConfig
         return loaded;
     }
 
-    @SuppressWarnings("unchecked")
     private static Map<String, List<AttributeDescriptor>> prepareSourceAttributeMetadata(
         ProcessingComponentSuite components) throws Exception
     {

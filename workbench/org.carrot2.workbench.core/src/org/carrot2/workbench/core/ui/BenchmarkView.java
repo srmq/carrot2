@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.*;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * {@link SearchEditor}-tied view for running benchmarks.
@@ -185,7 +185,6 @@ public final class BenchmarkView extends PageBookViewBase
      * Restore GUI state. We can't do it in {@link #init(IViewSite, IMemento)}
      * because GUI elements are not available then.
      */
-    @SuppressWarnings("unchecked")
     private void restoreState()
     {
         if (this.restoreState == null) return;
@@ -206,7 +205,6 @@ public final class BenchmarkView extends PageBookViewBase
     /**
      * Create settings panel.
      */
-    @SuppressWarnings("unchecked")
     private Control createSettingsPanel(Composite parent)
     {
         final BindableDescriptor descriptor = 
@@ -251,7 +249,6 @@ public final class BenchmarkView extends PageBookViewBase
     /**
      * @return Return a clone of the current settings.
      */
-    @SuppressWarnings("unchecked")
     BenchmarkSettings getCurrentSettings()
     {
         final BenchmarkSettings cloned = new BenchmarkSettings();

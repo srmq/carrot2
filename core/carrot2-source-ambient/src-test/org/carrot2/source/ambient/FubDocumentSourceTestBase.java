@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -20,9 +20,9 @@ import org.carrot2.core.test.DocumentSourceTestBase;
 import org.carrot2.util.attribute.AttributeUtils;
 import org.junit.Test;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimaps;
+import org.carrot2.shaded.guava.common.base.Function;
+import org.carrot2.shaded.guava.common.collect.ListMultimap;
+import org.carrot2.shaded.guava.common.collect.Multimaps;
 
 /**
  * Test cases for {@link FubDocumentSource}s.

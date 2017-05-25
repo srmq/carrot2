@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,8 +12,8 @@
 
 package org.carrot2.matrix.factorization;
 
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.matrix.MatrixAssertions;
 import org.carrot2.matrix.factorization.seeding.ISeedingStrategy;
 import org.carrot2.matrix.factorization.seeding.ISeedingStrategyFactory;
@@ -23,7 +23,6 @@ import org.junit.Test;
 /**
  * Test cases for matrix factorizations.
  */
-@SuppressWarnings("deprecation")
 public class MatrixFactorizationTest extends CarrotTestCase
 {
     /** Factorization parameters */

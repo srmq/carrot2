@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -24,9 +24,9 @@ import org.carrot2.core.Cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import org.carrot2.shaded.guava.common.base.Strings;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Sets;
 
 /**
  * Assertions on lists of {@link Cluster}s.
@@ -148,6 +148,20 @@ public class ClusterListAssertion extends
         if (l1s.equals(l2s))
         {
             sb.append("PROBLEM: Same sets different order or hierarchy.\n");
+            
+            sb.append("Clusters side-by-side (same-line order changes marked):\n");
+            for (int i = 0; i < Math.max(l1.size(), l2.size()); i++)
+            {
+                String lbl = l1.get(i);
+                sb.append(l2.get(i).equals(lbl) ? "  " : "* ");
+                sb.append(Strings.padEnd(lbl, maxL1Width, ' '));
+                sb.append(" | ");
+
+                lbl = l2.get(i);
+                sb.append(l1.get(i).equals(lbl) ? "  " : "* ");
+                sb.append(lbl);
+                sb.append("\n");
+            }
         }
         else
         {
@@ -159,21 +173,21 @@ public class ClusterListAssertion extends
             sb.append("Clusters in the previous set only:\n");
             for (String s : l1s) sb.append("  '" + s + "'\n");
             sb.append("Clusters in the actual set only:\n");
-            for (String s : l2s) sb.append("  '" + s + "'\n");            
-        }
+            for (String s : l2s) sb.append("  '" + s + "'\n");
+            
+            sb.append("Clusters side-by-side (order changes not shown):\n");
+            for (int i = 0; i < Math.max(l1.size(), l2.size()); i++)
+            {
+                String lbl = (i < l1.size() ? l1.get(i) : "--");
+                sb.append(l1s.contains(lbl) ? "* " : "  ");
+                sb.append(Strings.padEnd(lbl, maxL1Width, ' '));
+                sb.append(" | ");
 
-        sb.append("Clusters side-by-side (order changes not shown):\n");
-        for (int i = 0; i < Math.max(l1.size(), l2.size()); i++)
-        {
-            String lbl = (i < l1.size() ? l1.get(i) : "--");
-            sb.append(l1s.contains(lbl) ? "* " : "  ");
-            sb.append(Strings.padEnd(lbl, maxL1Width, ' '));
-            sb.append(" | ");
-
-            lbl = (i < l2.size() ? l2.get(i) : "--");
-            sb.append(l2s.contains(lbl) ? "* " : "  ");
-            sb.append(lbl);
-            sb.append("\n");
+                lbl = (i < l2.size() ? l2.get(i) : "--");
+                sb.append(l2s.contains(lbl) ? "* " : "  ");
+                sb.append(lbl);
+                sb.append("\n");
+            }            
         }
 
         logger.error("Failed cluster list comparison (previous | now):\n" 

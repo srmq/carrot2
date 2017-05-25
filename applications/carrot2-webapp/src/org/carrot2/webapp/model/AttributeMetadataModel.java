@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -20,7 +20,7 @@ import org.carrot2.util.simplexml.SimpleXmlWrapperValue;
 import org.carrot2.util.simplexml.SimpleXmlWrappers;
 import org.simpleframework.xml.*;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * Models attributes of a document source
@@ -58,7 +58,6 @@ public class AttributeMetadataModel
      */
     private static class AttributeDescriptors
     {
-        @SuppressWarnings("unused")
         @ElementList(name = "attributes", inline = true)
         final List<AttributeDescriptor> descriptors;
 
@@ -74,7 +73,6 @@ public class AttributeMetadataModel
      */
     private static class AttributeInitValues
     {
-        @SuppressWarnings("unused")
         @ElementMap(name = "init-value", key = "key", entry="init-value",  attribute = true, inline = true)
         final HashMap<String, SimpleXmlWrapperValue> initValues;
 

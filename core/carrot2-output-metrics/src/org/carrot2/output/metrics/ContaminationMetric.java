@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -20,7 +20,7 @@ import org.carrot2.core.attribute.AttributeNames;
 import org.carrot2.core.attribute.Processing;
 import org.carrot2.util.attribute.*;
 
-import com.google.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Lists;
 
 /**
  * Computes cluster contamination. If a cluster groups documents found in the same

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -16,12 +16,11 @@ import org.carrot2.matrix.MatrixAssertions;
 import org.carrot2.text.preprocessing.PreprocessingContext;
 import org.junit.Test;
 
-import com.carrotsearch.hppc.IntIntOpenHashMap;
+import com.carrotsearch.hppc.IntIntHashMap;
 
 /**
  * Test cases for {@link TermDocumentMatrixBuilder}.
  */
-@SuppressWarnings("deprecation")
 public class TermDocumentMatrixBuilderTest extends TermDocumentMatrixBuilderTestBase
 {
     @Test
@@ -255,7 +254,7 @@ public class TermDocumentMatrixBuilderTest extends TermDocumentMatrixBuilderTest
         MatrixAssertions.assertThat(vsmContext.termDocumentMatrix).isEquivalentTo(
             expectedTdMatrixElements);
 
-        final IntIntOpenHashMap expectedStemToRowIndex = new IntIntOpenHashMap();
+        final IntIntHashMap expectedStemToRowIndex = new IntIntHashMap();
         for (int i = 0; i < expectedTdMatrixStemIndices.length; i++)
         {
             expectedStemToRowIndex.put(expectedTdMatrixStemIndices[i], i);

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -13,6 +13,7 @@
 package org.carrot2.util.simplexml;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 import org.apache.commons.lang.ObjectUtils;
@@ -25,7 +26,7 @@ import org.junit.Test;
 import org.simpleframework.xml.*;
 import org.simpleframework.xml.core.*;
 
-import com.google.common.collect.*;
+import org.carrot2.shaded.guava.common.collect.*;
 
 /**
  * Test cases for {@link SimpleXmlWrappers}.
@@ -128,7 +129,7 @@ public class SimpleXmlWrappersTest extends CarrotTestCase
     @Test
     public void testFileResource() throws Exception
     {
-        check(new FileResource(new File(".").getAbsoluteFile()));
+        check(new FileResource(Paths.get(".").toAbsolutePath()));
     }
 
     @Test
@@ -420,7 +421,7 @@ public class SimpleXmlWrappersTest extends CarrotTestCase
         persister.write(SimpleXmlWrappers.wrap(value), writer);
         final SimpleXmlWrapperValue deserialized = persister.read(
             SimpleXmlWrapperValue.class, writer.toString());
-        assertThat(SimpleXmlWrappers.unwrap(deserialized)).isNull();
+        assertThat((Object) SimpleXmlWrappers.unwrap(deserialized)).isNull();
     }
 
     public void checkMap(String key, Object value) throws Exception

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -14,13 +14,12 @@ package org.carrot2.matrix.factorization.seeding;
 
 import java.util.Random;
 
-import org.apache.mahout.math.function.DoubleFunction;
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.function.DoubleFunction;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
 
 /**
  * Random matrix factorization seeding.
  */
-@SuppressWarnings("deprecation")
 public class RandomSeedingStrategy implements ISeedingStrategy
 {
     /** Colt's random number generator */
@@ -36,8 +35,6 @@ public class RandomSeedingStrategy implements ISeedingStrategy
 
     /**
      * Creates RandomSeedingStrategy with given random seed.
-     * 
-     * @param seed
      */
     public RandomSeedingStrategy(int seed)
     {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -51,7 +51,6 @@ public abstract class ProcessingComponentTestBase<T extends IProcessingComponent
     /**
      * Controller and attributes are cleared before every test.
      */
-    @SuppressWarnings("unused")
     @Before
     private void prepareComponent()
     {
@@ -95,6 +94,7 @@ public abstract class ProcessingComponentTestBase<T extends IProcessingComponent
     /**
      * Return an instance of a {@link Controller} with caching, initializing it on the way.
      */
+    @SuppressWarnings("unchecked")
     protected final Controller getCachingController(Map<String, Object> initAttributes,
         Class<? extends IProcessingComponent>... cachedComponentClasses)
     {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -26,7 +26,7 @@ import org.carrot2.util.attribute.AttributeBinder;
 import org.carrot2.util.attribute.Input;
 import org.junit.Before;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * A base class for tests requiring that the main term-document document matrix is built.
@@ -42,7 +42,6 @@ public class TermDocumentMatrixBuilderTestBase extends PreprocessingComponentTes
     /** Preprocessing pipeline used for tests */
     protected CompletePreprocessingPipeline preprocessingPipeline;
     
-    @SuppressWarnings("unchecked")
     @Before
     public void setUpMatrixBuilder() throws Exception
     {

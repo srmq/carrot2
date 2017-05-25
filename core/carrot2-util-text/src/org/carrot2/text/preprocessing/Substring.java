@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,7 +12,7 @@
 
 package org.carrot2.text.preprocessing;
 
-import com.carrotsearch.hppc.IntIntOpenHashMap;
+import com.carrotsearch.hppc.IntIntHashMap;
 
 /**
  * Represents a general substring. Contains information on the substring's boundaries and
@@ -33,7 +33,7 @@ final class Substring
     public int frequency;
 
     /** This substring's frequency across documents */
-    public IntIntOpenHashMap tfByDocument;
+    public IntIntHashMap tfByDocument;
 
     /** Used to properly aggregate phrase frequencies */
     public int documentIndexToOffset = -1;

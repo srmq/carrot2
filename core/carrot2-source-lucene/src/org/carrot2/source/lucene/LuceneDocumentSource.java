@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -30,7 +30,6 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
-import org.apache.lucene.util.Version;
 import org.carrot2.core.Document;
 import org.carrot2.core.Document.IDocumentSerializationListener;
 import org.carrot2.core.IControllerContext;
@@ -62,7 +61,7 @@ import org.carrot2.util.attribute.constraint.NotBlank;
 import org.carrot2.util.simplexml.SimpleXmlWrappers;
 import org.slf4j.Logger;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * A {@link IDocumentSource} fetching {@link Document}s from a local Apache Lucene index.
@@ -88,11 +87,6 @@ public final class LuceneDocumentSource extends ProcessingComponentBase implemen
             FSDirectory.class, 
             FSDirectoryWrapper.class, 
             false);
-
-        SimpleXmlWrappers.addWrapper(
-            StandardAnalyzer.class,
-            StandardAnalyzerWrapper.class, 
-            true);
     }
 
     @Processing
@@ -135,7 +129,6 @@ public final class LuceneDocumentSource extends ProcessingComponentBase implemen
      * {@link org.apache.lucene.analysis.Analyzer} used at indexing time. The same
      * analyzer should be used for querying.
      */
-    @SuppressWarnings("deprecation")
     @Input
     @Init
     @Processing
@@ -147,7 +140,7 @@ public final class LuceneDocumentSource extends ProcessingComponentBase implemen
     @Label("Analyzer")
     @Level(AttributeLevel.MEDIUM)
     @Group(INDEX_PROPERTIES)    
-    public Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_CURRENT);
+    public Analyzer analyzer = new StandardAnalyzer();
 
     /**
      * {@link IFieldMapper} provides the link between Carrot2
@@ -317,24 +310,20 @@ public final class LuceneDocumentSource extends ProcessingComponentBase implemen
                         + "plain text query is required.");
             }
 
-            @SuppressWarnings("deprecation")
-            Version luceneVersion = Version.LUCENE_CURRENT;
-
             if (searchFields.length == 1)
             {
-                query = new QueryParser(luceneVersion, searchFields[0], analyzer)
+                query = new QueryParser(searchFields[0], analyzer)
                     .parse(textQuery);
             }
             else
             {
-                query = new MultiFieldQueryParser(luceneVersion, searchFields,
-                    analyzer).parse(textQuery);
+                query = new MultiFieldQueryParser(searchFields, analyzer).parse(textQuery);
             }
         }
 
         final SearchEngineResponse response = new SearchEngineResponse();
         final IndexSearcher searcher = indexOpen(directory);
-        final TopDocs docs = searcher.search((Query) query, null, results);
+        final TopDocs docs = searcher.search((Query) query, results);
 
         response.metadata.put(SearchEngineResponse.RESULTS_TOTAL_KEY, docs.totalHits);
 

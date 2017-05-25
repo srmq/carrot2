@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -14,7 +14,6 @@ package org.carrot2.matrix.factorization;
 
 import org.carrot2.matrix.factorization.seeding.ISeedingStrategy;
 import org.carrot2.matrix.factorization.seeding.ISeedingStrategyFactory;
-import org.carrot2.matrix.factorization.seeding.RandomSeedingStrategy;
 import org.carrot2.matrix.factorization.seeding.RandomSeedingStrategyFactory;
 
 /**
@@ -80,7 +79,6 @@ public abstract class IterativeMatrixFactorizationFactory implements
     }
 
     /**
-     * Returns {@link RandomSeedingStrategy} with constant seed.
      */
     protected ISeedingStrategy createSeedingStrategy()
     {
@@ -129,8 +127,6 @@ public abstract class IterativeMatrixFactorizationFactory implements
 
     /**
      * Sets the {@link ISeedingStrategyFactory} to be used by this factory.
-     * 
-     * @param seedingFactory
      */
     public void setSeedingFactory(ISeedingStrategyFactory seedingFactory)
     {
@@ -148,8 +144,6 @@ public abstract class IterativeMatrixFactorizationFactory implements
 
     /**
      * Set to <code>true</code> to generate an ordered basis.
-     * 
-     * @param ordered
      */
     public void setOrdered(boolean ordered)
     {

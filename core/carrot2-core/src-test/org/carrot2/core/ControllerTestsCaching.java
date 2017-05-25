@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -31,7 +31,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests caching functionality of a {@link Controller}.
@@ -42,6 +44,7 @@ public abstract class ControllerTestsCaching extends ControllerTestsBase
      * Returns a controller that implements basic processing and results caching 
      * functionality. 
      */
+    @SuppressWarnings("unchecked")
     public abstract Controller getCachingController(Class<? extends IProcessingComponent>... cachedComponentClasses);
 
     /**

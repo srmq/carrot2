@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,9 +12,9 @@
 
 package org.carrot2.util.attribute;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.file.Path;
 
 import org.carrot2.util.attribute.AttributeBinder.AttributeTransformerFromString;
 import org.carrot2.util.attribute.constraint.ImplementingClasses;
@@ -25,10 +25,12 @@ import org.carrot2.util.resource.URLResourceWithParams;
 import org.carrot2.util.tests.CarrotTestCase;
 import org.junit.Test;
 
+import com.carrotsearch.randomizedtesting.LifecycleScope;
+import com.carrotsearch.randomizedtesting.RandomizedTest;
+
 /**
  * Test cases for {@link AttributeTransformerFromString}.
  */
-@SuppressWarnings("unused")
 public class ResourceFromStringTest extends CarrotTestCase
 {
     @ImplementingClasses(classes =
@@ -40,10 +42,8 @@ public class ResourceFromStringTest extends CarrotTestCase
     @Test
     public void testFileResourceFile() throws Exception
     {
-        final File file = File.createTempFile(
-            ResourceFromStringTest.class.getSimpleName(), "");
-        file.deleteOnExit();
-        check("resource", file.getAbsolutePath(), new FileResource(file));
+        Path file = RandomizedTest.newTempFile(LifecycleScope.TEST);
+        check("resource", file.toAbsolutePath().toString(), new FileResource(file));
     }
 
     @Test

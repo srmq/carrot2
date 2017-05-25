@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -21,7 +21,8 @@ import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.IDocumentSource;
 import org.carrot2.core.ProcessingResult;
 import org.carrot2.core.attribute.CommonAttributesDescriptor;
-import org.carrot2.source.microsoft.*;
+import org.carrot2.source.microsoft.v5.Bing5DocumentSource;
+import org.carrot2.source.microsoft.v5.Bing5DocumentSourceDescriptor;
 
 /**
  * This example shows how to set up and use a {@link Controller} that reuses instances of
@@ -33,7 +34,7 @@ public class UsingCachingController
 {
     @SuppressWarnings(
     {
-        "unused", "unchecked"
+        "unused",
     })
     public static void main(String [] args)
     {
@@ -56,9 +57,9 @@ public class UsingCachingController
         CommonAttributesDescriptor
             .attributeBuilder(globalAttributes)
                 .results(50);
-        Bing3WebDocumentSourceDescriptor
+        Bing5DocumentSourceDescriptor
             .attributeBuilder(globalAttributes)
-                .appid(BingKeyAccess.getKey()); // use your own ID here
+                .apiKey(BingKeyAccess.getKey()); // use your own ID here
         controller.init(globalAttributes);
 
         /*
@@ -74,13 +75,13 @@ public class UsingCachingController
         CommonAttributesDescriptor.attributeBuilder(attributes).query("data mining");
 
         start = System.currentTimeMillis();
-        result = controller.process(attributes, Bing3WebDocumentSource.class,
+        result = controller.process(attributes, Bing5DocumentSource.class,
             LingoClusteringAlgorithm.class);
         duration = System.currentTimeMillis() - start;
         System.out.println(duration + " ms (empty cache)");
 
         start = System.currentTimeMillis();
-        result = controller.process(attributes, Bing3WebDocumentSource.class,
+        result = controller.process(attributes, Bing5DocumentSource.class,
             LingoClusteringAlgorithm.class);
         duration = System.currentTimeMillis() - start;
         System.out.println(duration + " ms (documents and clusters from cache)");

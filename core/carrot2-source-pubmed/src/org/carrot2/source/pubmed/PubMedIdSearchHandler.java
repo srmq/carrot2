@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.xml.sax.SAXException;
 
-import com.google.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Lists;
 
 /**
  * A SAX content handler that collects PubMed IDs.

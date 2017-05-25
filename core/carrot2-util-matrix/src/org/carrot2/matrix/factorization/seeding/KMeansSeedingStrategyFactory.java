@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -46,8 +46,6 @@ public class KMeansSeedingStrategyFactory implements ISeedingStrategyFactory
     /**
      * Sets the maximum number of iterations the k-means algorithm is allowed to
      * perform.
-     * 
-     * @param maxIterations
      */
     public void setMaxIterations(int maxIterations)
     {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -19,7 +19,6 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.carrot2.core.ProcessingComponentDescriptor;
-import org.carrot2.core.attribute.AttributeNames;
 import org.carrot2.core.attribute.Internal;
 import org.carrot2.core.attribute.InternalAttributePredicate;
 import org.carrot2.util.attribute.AttributeDescriptor;
@@ -41,7 +40,7 @@ import org.eclipse.swt.widgets.Event;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.stream.Format;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * Superclass for attribute management actions.
@@ -72,7 +71,7 @@ abstract class SaveAttributesAction extends Action
     {
         super(text, IAction.AS_DROP_DOWN_MENU);
 
-        setImageDescriptor(WorkbenchCorePlugin.getImageDescriptor("icons/save_e.gif"));
+        setImageDescriptor(WorkbenchCorePlugin.getImageDescriptor("icons/save_e.png"));
         setMenuCreator(new MenuManagerCreator()
         {
             protected MenuManager createMenu()
@@ -139,7 +138,6 @@ abstract class SaveAttributesAction extends Action
          */
         final AttributeValueSet overridenAvs = new AttributeValueSet(
             "overridden-attributes", defaults);
-        removeSpecialKeys(overrides);
         removeInternalNonConfigurationAttributes(overrides, componentId);
         removeKeysWithDefaultValues(overrides, defaults);
         overrides.keySet().retainAll(defaults.getAttributeValues().keySet());
@@ -224,17 +222,6 @@ abstract class SaveAttributesAction extends Action
     }
 
     /**
-     * Handle the "special" {@link Input} keys that shouldn't be serialized.
-     */
-    protected static void removeSpecialKeys(Map<String, Object> keyMap)
-    {
-        keyMap.remove(AttributeNames.DOCUMENTS);
-        keyMap.remove(AttributeNames.QUERY);
-        keyMap.remove(AttributeNames.START);
-        keyMap.remove(AttributeNames.RESULTS);
-    }
-
-    /**
      * @return Create the menu for the action.
      */
     protected MenuManager createMenu()
@@ -277,7 +264,6 @@ abstract class SaveAttributesAction extends Action
     /**
      * Default attribute value set for a given component.
      */
-    @SuppressWarnings("unchecked")
     static AttributeValueSet getDefaultAttributeValueSet(String componentId)
     {
         BindableDescriptor desc = WorkbenchCorePlugin.getDefault()
@@ -289,7 +275,6 @@ abstract class SaveAttributesAction extends Action
         {
             defaults.put(e.getKey(), e.getValue().defaultValue);
         }
-        removeSpecialKeys(defaults);
         removeInternalNonConfigurationAttributes(defaults, componentId);
 
         AttributeValueSet result = new AttributeValueSet("defaults");

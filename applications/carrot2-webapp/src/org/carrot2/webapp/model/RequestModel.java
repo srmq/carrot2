@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -88,11 +88,9 @@ public class RequestModel
 
     public Map<String, Object> otherParameters;
 
-    @SuppressWarnings("unused")
     @ElementMap(entry = "parameter", key = "key", attribute = true, inline = true, required = false)
     private HashMap<String, SimpleXmlWrapperValue> otherParametersToSerialize;
 
-    @SuppressWarnings("unused")
     @ElementMap(entry = "cookie", key = "key", attribute = true, inline = true, required = false)
     private HashMap<String, SimpleXmlWrapperValue> cookies;
 

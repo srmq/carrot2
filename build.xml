@@ -88,7 +88,7 @@
   <!-- Compilation presets. -->
   <presetdef name="javac">
       <javac deprecation="false" debug="true"
-          target="1.6" source="1.6"
+          target="1.7" source="1.7"
           encoding="UTF-8" includeantruntime="true" optimize="true"/>
   </presetdef>
 
@@ -160,7 +160,6 @@
     <exclude name="lib/com.thoughtworks.qdox/**" />
     <exclude name="lib/org.apache.velocity/**" />
     <exclude name="lib/org.apache.oro/**" />
-    <exclude name="lib/com.planetj.compression/**" />
     <exclude name="lib/org.eclipse.jetty/**" />
     <exclude name="lib/org.kohsuke.args4j/**" />
     <exclude name="lib/org.apache.xml/**" />
@@ -176,11 +175,9 @@
   </patternset>
 
   <patternset id="lib.core.mini">
-    <include name="lib/**/mahout-*.jar" />
-    <include name="lib/**/mahout.LICENSE" />
     <include name="lib/**/colt.LICENSE" />
     <include name="lib/**/commons-lang*" />
-    <include name="lib/**/guava*" />
+    <include name="lib/**/carrot2-guava*" />
     <include name="lib/**/jackson*" />
     <include name="lib/**/lucene-snowball*" />
     <include name="lib/**/lucene.LICENSE" />
@@ -244,23 +241,9 @@
   </path>
 
   <antversion property="ant.version" />
-  <fail message="Use ANT 1.8.2 or later. Your ANT is: ${ant.version}">
-    <condition><not><antversion atleast="1.8.2" /></not></condition>
+  <fail message="Use ANT 1.9.3 or later. Your ANT is: ${ant.version}">
+    <condition><not><antversion atleast="1.9.3" /></not></condition>
   </fail>
-
-  <!-- 
-    The property "ant.java.version" is not always correct, depending on used ANT version.
-    E.g. Java 8 is only detected in ANT 1.8.3+.
-   -->
-  <condition property="build.java.runtime" value="1.8">
-    <hasmethod classname="java.util.Collections" method="emptySortedSet"/>
-  </condition>
-  <condition property="build.java.runtime" value="1.7">
-    <hasmethod classname="java.lang.Throwable" method="getSuppressed"/>
-  </condition>
-  <!-- Assume it's 1.6+ -->
-  <property name="build.java.runtime" value="1.6" />
-
 
   <!-- 
        Output cleanup.
@@ -469,6 +452,7 @@
             parallelism="${tests.cpus}"
             shuffleOnSlave="true"
             leaveTemporary="false"
+            maxmemory="256m"
     >
         <listeners>
             <report-text
@@ -508,7 +492,7 @@
         </balancers> 
 
         <jvmarg value="-ea" />
-        
+
         <classpath refid="test.classpath" />
 
         <sysproperty key="tests.externalservices" value="${tests.externalservices}" />
@@ -520,7 +504,7 @@
 
         <!-- Pass any command-line properties that may alter tests' behavior. -->
         <syspropertyset>
-          <propertyref name="bing3.key" />
+          <propertyref name="bing5.key" />
           <propertyref name="tests.filter" />
         </syspropertyset>
 
@@ -674,11 +658,6 @@
     </fail>
 
     <mkdir dir="${javadoc.dir}" />
-
-    <!-- for now disable doclint on JDK 8: -->
-    <condition property="javadoc.failonerror" value="false" else="true">
-      <equals arg1="${build.java.runtime}" arg2="1.8"/>
-    </condition>
 
     <javadoc destdir="${javadoc.dir}"
              access="protected"
@@ -928,7 +907,7 @@
     
     <patternset id="carrot2.required">
       <include name="**/commons-lang*" />
-      <include name="**/guava*" />
+      <include name="**/carrot2-guava*" />
       <include name="**/hppc*" />
       <include name="**/jackson*" />
       <include name="**/log4j*" />
@@ -936,7 +915,6 @@
       <include name="**/simple-xml*" />
       <include name="**/slf4j*" />
       <exclude name="**/slf4j-nop*" />
-      <include name="**/mahout*" />
       <include name="**/colt.LICENSE" />
       <include name="**/attributes-binder*" />
     </patternset>
@@ -946,7 +924,6 @@
       <include name="**/commons-codec*" />
       <include name="org.apache.http/http*" />
       <include name="**/jcl-over-slf4j*" />
-      <include name="**/jdom*" />
       <include name="**/lucene*" />
       <exclude name="**/lucene-analyzers*" />
       <include name="**/rome*" />
@@ -1067,10 +1044,11 @@
   <!--
       Maven artefacts.
     -->
+  <property name="mvn" value="mvn" />
   <target name="maven" depends="antlib, jar, jar.src, javadoc, jar.mini, core.test, carrot2.maven.install" description="Install Maven artifacts">
     <!-- Try to compile the examples using maven. -->
-    <exec executable="mvn" failonerror="true" vmlauncher="false" dir="${api.dir}">
-	<arg line="clean integration-test -Prun" />
+    <exec executable="${mvn}" failonerror="true" vmlauncher="false" dir="${api.dir}">
+	    <arg line="clean integration-test -Prun" />
     </exec>    
   </target>
 
@@ -1181,8 +1159,8 @@
         extra.args="
             -Dproduct=/org.carrot2.workbench.feature/Workbench.product
 
-            -DjavacSource=1.6
-            -DjavacTarget=1.6
+            -DjavacSource=1.8
+            -DjavacTarget=1.8
 
             -Dconfigs=${rcp.os},${rcp.ws},${rcp.arch}
             -DarchivesFormat=${rcp.os},${rcp.ws},${rcp.arch}-folder
@@ -1205,14 +1183,14 @@
     <property file="${carrot2.master.basedir}/etc/buildinfo/workbench-platforms.properties" />
 
     <echo>${configs}</echo>
-    
+
     <pde.build
         build.dir="${workbench.build.dir}/build"  
         extra.args="
             -Dproduct=/org.carrot2.workbench.feature/Workbench.product
 
-            -DjavacSource=1.6
-            -DjavacTarget=1.6
+            -DjavacSource=1.8
+            -DjavacTarget=1.8
 
             -DarchivePrefix=${carrot2.workbench.base}-${carrot2.version}
             -DbuildId=${carrot2.workbench.base}
@@ -1243,6 +1221,37 @@
         <mapper type="glob" from="*.zip" to="*-${carrot2.version}.zip"/>
       </chainedmapper>
     </copy>
+
+    <!-- CARROT-1141: For MacOS builds remove the extra Contents folder created to bypass PDE build issues,
+         fix permissions, relocate files so that the app is self-contained.
+    -->
+    <property name="dist.mac.zip" location="${workbench.dist.dir}/${carrot2.workbench.base}-macosx.cocoa.x86_64-${carrot2.version}.zip" />
+    <property name="dist.mac.tmp" location="${workbench.dist.dir}/temporary" />
+    <delete dir="${dist.mac.tmp}" failonerror="false" />
+    <unzip src="${dist.mac.zip}" dest="${dist.mac.tmp}" />
+    <move toDir="${dist.mac.tmp}/${carrot2.workbench.base}-${carrot2.version}/${carrot2.workbench.base}.app/Contents/Eclipse">
+      <fileset dir="${dist.mac.tmp}/${carrot2.workbench.base}-${carrot2.version}">
+          <include name="configuration/**" />
+          <include name="features/**" />
+          <include name="plugins/**" />
+          <include name=".eclipseproduct" />
+      </fileset>
+      <fileset dir="${dist.mac.tmp}/${carrot2.workbench.base}-${carrot2.version}/${carrot2.workbench.base}.app/Contents/MacOS">
+          <include name="*.ini" />
+      </fileset>
+    </move>
+
+    <zip destfile="${dist.mac.zip}">
+        <fileset dir="${dist.mac.tmp}">
+          <include name="**/*" />
+          <exclude name="*/Contents/**" />
+          <exclude name="*/*.app/Contents/MacOS/${carrot2.workbench.base}" />
+        </fileset>
+        <zipfileset dir="${dist.mac.tmp}" filemode="755">
+          <include name="*/*.app/Contents/MacOS/${carrot2.workbench.base}" />
+        </zipfileset>
+    </zip>  
+    <delete dir="${dist.mac.tmp}" failonerror="false" />
   </target>
 
   <target name="workbench.rcp.defaults">

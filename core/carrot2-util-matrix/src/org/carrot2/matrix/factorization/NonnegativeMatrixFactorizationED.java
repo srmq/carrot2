@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,16 +12,15 @@
 
 package org.carrot2.matrix.factorization;
 
-import org.apache.mahout.math.function.DoubleFunction;
-import org.apache.mahout.math.function.Functions;
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.carrot2.mahout.math.function.DoubleFunction;
+import org.carrot2.mahout.math.function.Functions;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 
 /**
  * Performs matrix factorization using the Non-negative Matrix Factorization algorithm
  * with minimization of Euclidean Distance between A and UV' and multiplicative updating.
  */
-@SuppressWarnings("deprecation")
 public class NonnegativeMatrixFactorizationED extends IterativeMatrixFactorizationBase
 {
     /**

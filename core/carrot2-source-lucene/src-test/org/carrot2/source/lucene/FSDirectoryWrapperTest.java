@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,13 +12,13 @@
 
 package org.carrot2.source.lucene;
 
-import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.carrot2.util.ReflectionUtils;
 import org.carrot2.util.simplexml.SimpleXmlWrapperValue;
 import org.carrot2.util.simplexml.SimpleXmlWrappers;
@@ -28,13 +28,14 @@ import org.junit.Test;
 import org.simpleframework.xml.core.Persister;
 
 import com.carrotsearch.randomizedtesting.LifecycleScope;
+import com.carrotsearch.randomizedtesting.RandomizedTest;
 
 /**
  * Test cases for {@link FSDirectoryWrapper}.
  */
 public class FSDirectoryWrapperTest extends CarrotTestCase
 {
-    private static File indexDir;
+    private static Path indexDir;
     private static FSDirectory directory;
 
     @BeforeClass
@@ -44,15 +45,13 @@ public class FSDirectoryWrapperTest extends CarrotTestCase
         ReflectionUtils.classForName(LuceneDocumentSource.class.getName());
     }
 
-    @SuppressWarnings("deprecation")
     @BeforeClass
     public static void prepareIndex() throws Exception
     {
-        indexDir = newTempDir(LifecycleScope.SUITE);
+        indexDir = RandomizedTest.newTempDir(LifecycleScope.SUITE);
         directory = FSDirectory.open(indexDir);
         closeAfterSuite(directory);
-        LuceneIndexUtils.createAndPopulateIndex(directory, 
-            new SimpleAnalyzer(Version.LUCENE_CURRENT));
+        LuceneIndexUtils.createAndPopulateIndex(directory, new SimpleAnalyzer());
     }
 
     @Test
@@ -61,7 +60,6 @@ public class FSDirectoryWrapperTest extends CarrotTestCase
         FSDirectory unserializedDir = null;
         try
         {
-            final File file = indexDir;
             final Persister persister = new Persister();
 
             final StringWriter writer = new StringWriter();
@@ -73,8 +71,7 @@ public class FSDirectoryWrapperTest extends CarrotTestCase
             unserializedDir = SimpleXmlWrappers.unwrap(wrapper);
 
             assertThat(unserializedDir).isNotNull();
-            assertThat(unserializedDir.getDirectory().getCanonicalFile())
-                .isEqualTo(file.getCanonicalFile());
+            assertThat(Files.isSameFile(unserializedDir.getDirectory(), indexDir)).isTrue();
         }
         finally
         {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -48,10 +48,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.*;
 import org.eclipse.ui.part.ViewPart;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.base.Predicate;
+import org.carrot2.shaded.guava.common.base.Predicates;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * The search view defines a combination of source, algorithm and required input
@@ -67,7 +67,6 @@ public class SearchInputView extends ViewPart
     /**
      * Filter showing only required attributes.
      */
-    @SuppressWarnings("unchecked")
     private final static Predicate<AttributeDescriptor> SHOW_REQUIRED = new AnnotationsPredicate(
         false, Required.class);
 
@@ -164,7 +163,7 @@ public class SearchInputView extends ViewPart
      * 
      */
     private Image errorStatusImage = WorkbenchCorePlugin.getImageDescriptor(
-        "icons/error.gif").createImage();
+        "icons/error.png").createImage();
 
     /**
      * Link the GUI of {@link SearchInputView} with the currently active
@@ -235,7 +234,7 @@ public class SearchInputView extends ViewPart
         {
             super("Show optional attributes", SWT.TOGGLE);
 
-            setImageDescriptor(WorkbenchCorePlugin.getImageDescriptor("icons/optional.gif"));
+            setImageDescriptor(WorkbenchCorePlugin.getImageDescriptor("icons/optional.png"));
 
             /*
              * Subscribe to change events on the global preference property and update
@@ -329,7 +328,7 @@ public class SearchInputView extends ViewPart
         final IAction linkWithEditor = new ActionDelegateProxy(
             new LinkWithEditorActionDelegate(), IAction.AS_CHECK_BOX);
         linkWithEditor.setImageDescriptor(WorkbenchCorePlugin
-            .getImageDescriptor("icons/link_e.gif"));
+            .getImageDescriptor("icons/link_e.png"));
         linkWithEditor.setToolTipText("Link the interface with current editor");
         toolBarManager.add(linkWithEditor);
         this.linkWithEditorAction = linkWithEditor;
@@ -651,7 +650,6 @@ public class SearchInputView extends ViewPart
      * Adds a {@link BindableDescriptor} to {@link #descriptors}, filtering
      * to only {@link Input} and {@link Processing} attributes.
      */
-    @SuppressWarnings("unchecked")
     private void addFilteredDescriptor(ProcessingComponentDescriptor e)
     {
         final WorkbenchCorePlugin core = WorkbenchCorePlugin.getDefault();

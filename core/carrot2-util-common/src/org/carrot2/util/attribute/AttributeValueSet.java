@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -20,7 +20,7 @@ import org.simpleframework.xml.*;
 import org.simpleframework.xml.core.Commit;
 import org.simpleframework.xml.core.Persist;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * Maintains a named set of attribute values. Allows one {@link AttributeValueSet} (A) to
@@ -205,7 +205,6 @@ public class AttributeValueSet
      * Converts attribute values to {@link ISimpleXmlWrapper}s for serialization.
      */
     @Persist
-    @SuppressWarnings("unused")
     private void convertAttributeValuesToStrings()
     {
         overridenAttributeValuesForSerialization = new TreeMap<String, SimpleXmlWrapperValue>(
@@ -218,7 +217,6 @@ public class AttributeValueSet
      * Converts attribute values to {@link ISimpleXmlWrapper}s after deserialization.
      */
     @Commit
-    @SuppressWarnings("unused")
     private void convertAttributeValuesFromStrings() throws Exception
     {
         if (overridenAttributeValuesForSerialization == null)

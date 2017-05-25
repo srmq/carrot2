@@ -1,7 +1,8 @@
+
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -25,11 +26,11 @@ import org.carrot2.source.xml.XmlDocumentSource;
 import org.carrot2.source.xml.XmlDocumentSourceDescriptor;
 import org.carrot2.util.resource.URLResourceWithParams;
 import org.carrot2.util.tests.CarrotTestCase;
-import org.eclipse.jetty.http.security.Password;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.util.component.LifeCycle;
+import org.eclipse.jetty.util.security.Password;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Rule;
 import org.junit.Test;

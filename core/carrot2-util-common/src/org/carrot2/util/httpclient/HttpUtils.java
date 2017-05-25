@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -43,11 +43,12 @@ import org.carrot2.util.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Lists;
 
 /**
  * Various utilities for working with HTTP data streams.
  */
+@SuppressWarnings("deprecation")
 public class HttpUtils
 {
     private static Logger logger = LoggerFactory.getLogger(HttpUtils.class);

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -21,7 +21,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 import com.carrotsearch.hppc.IntStack;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * A simple SAX tracking handler that stores the current element's path.
@@ -40,7 +40,7 @@ class PathTrackingHandler implements ContentHandler
     private final StringBuilder path = new StringBuilder();
 
     /** Path segments for recursion. */
-    private final IntStack pathSegments = IntStack.newInstance();
+    private final IntStack pathSegments = new IntStack();
 
     private final HashMap<String, Trigger> triggers = Maps.newHashMap();
 

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -27,15 +27,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-
 /**
  * A servlet filter that adds/ sets a HTTP header to matching URIs.
  */
 public final class AddHeaderFilter implements Filter
 {
-    private final static Logger logger = org.slf4j.LoggerFactory.getLogger(AddHeaderFilter.class);
-
     private final static String INIT_PARAM_URI_REGEXP = "uri.regexp";
     private final static String INIT_PARAM_HTTP_HEADER_PREFIX = "http:";
 
@@ -47,6 +43,7 @@ public final class AddHeaderFilter implements Filter
      * 
      * @param filterConfig The filter configuration object
      */
+    @SuppressWarnings("unchecked")
     public void init(FilterConfig filterConfig) throws ServletException
     {
         if (filterConfig == null)

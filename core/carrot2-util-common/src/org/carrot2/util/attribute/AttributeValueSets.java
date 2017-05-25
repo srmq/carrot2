@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -19,8 +19,8 @@ import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.core.*;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import org.carrot2.shaded.guava.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Sets;
 
 /**
  * Maintains a collection of {@link AttributeValueSet}s and provides methods for
@@ -244,7 +244,6 @@ public class AttributeValueSets
      * Updates base attribute value set ids before persisting.
      */
     @Persist
-    @SuppressWarnings("unused")
     private void updateBaseAttributeValueSetIds()
     {
         // There won't be too many attribute values sets, so nested loops should be fine
@@ -272,7 +271,6 @@ public class AttributeValueSets
      * Restores base attribute value set references based on ids on deserialization.
      */
     @Commit
-    @SuppressWarnings("unused")
     private void restoreBaseAttributeValueSets()
     {
         for (final AttributeValueSet attributeValueSet : attributeValueSets.values())

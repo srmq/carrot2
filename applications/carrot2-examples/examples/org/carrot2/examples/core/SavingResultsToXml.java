@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -24,7 +24,7 @@ import org.carrot2.core.attribute.CommonAttributesDescriptor;
 import org.carrot2.examples.SampleDocumentData;
 import org.carrot2.examples.clustering.ClusteringDataFromDocumentSources;
 
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * This example shows how to save clustering results to XML.

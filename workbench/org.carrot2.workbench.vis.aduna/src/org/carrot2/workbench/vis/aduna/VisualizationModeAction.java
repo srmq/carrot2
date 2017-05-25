@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -39,7 +39,7 @@ public final class VisualizationModeAction extends Action
             VisualizationMode.class.getEnumConstants(), host);
 
         setImageDescriptor(AdunaActivator.imageDescriptorFromPlugin(
-            AdunaActivator.PLUGIN_ID, "icons/selection.gif"));
+            AdunaActivator.PLUGIN_ID, "icons/selection.png"));
         setMenuCreator(menuCreator);
     }
 

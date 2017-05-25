@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,7 +12,7 @@
 
 package org.carrot2.examples.clustering;
 
-import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +25,14 @@ import org.carrot2.core.ProcessingComponentSuite;
 import org.carrot2.core.ProcessingResult;
 import org.carrot2.core.attribute.CommonAttributesDescriptor;
 import org.carrot2.examples.ConsoleFormatter;
-import org.carrot2.source.microsoft.Bing3WebDocumentSourceDescriptor;
 import org.carrot2.util.resource.ContextClassLoaderLocator;
 import org.carrot2.util.resource.DirLocator;
 import org.carrot2.util.resource.IResource;
 import org.carrot2.util.resource.ResourceLookup;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
+import org.carrot2.source.microsoft.v5.Bing5DocumentSourceDescriptor;
 
 /**
  * This example shows how to use 
@@ -45,7 +45,6 @@ public class UsingComponentSuites
 {
     public static void main(String [] args) throws Exception
     {
-        @SuppressWarnings("unchecked")
         final Controller controller = ControllerFactory.createCachingPooling(IDocumentSource.class);
 
         // Initialization-time attributes that will apply to all components.
@@ -54,14 +53,14 @@ public class UsingComponentSuites
         // Prepare resource lookup facade. We will use the suites directory 
         // and class path resources.
         final ResourceLookup resourceLookup = new ResourceLookup(
-            new DirLocator(new File("suites")),
+            new DirLocator(Paths.get("suites")),
             new ContextClassLoaderLocator());
 
         // We know we'll be using Bing so set up its access key.
         // use your own ID here!
-        Bing3WebDocumentSourceDescriptor
+        Bing5DocumentSourceDescriptor
             .attributeBuilder(initAttributes)
-                .appid(BingKeyAccess.getKey());
+                .apiKey(BingKeyAccess.getKey());
         
         // We'll read the component suite definition from an XML stream.
         // IResource is an abstraction layer over resources in Carrot2.

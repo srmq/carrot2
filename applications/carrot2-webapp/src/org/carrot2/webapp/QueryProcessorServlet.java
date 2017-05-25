@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -68,10 +68,10 @@ import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.stream.Format;
 import org.slf4j.Logger;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import org.carrot2.shaded.guava.common.collect.ImmutableMap;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Sets;
 
 /**
  * Processes search requests.
@@ -186,7 +186,6 @@ public class QueryProcessorServlet extends HttpServlet
     /*
      * Perform GET request.
      */
-    @SuppressWarnings("unchecked")
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
@@ -573,7 +572,7 @@ public class QueryProcessorServlet extends HttpServlet
             this.maxCarrot2Results = config.maxCarrot2Results;
             this.useMaxCarrot2Results = useMaxCarrot2Results;
 
-            // Result sizes
+            // NewsArticle sizes
             final Set<Integer> resultSizes = Sets.newHashSet();
             for (ResultsSizeModel size : config.sizes)
             {

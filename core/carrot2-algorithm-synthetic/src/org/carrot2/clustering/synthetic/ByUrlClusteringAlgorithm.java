@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -19,7 +19,7 @@ import org.carrot2.core.*;
 import org.carrot2.core.attribute.*;
 import org.carrot2.util.attribute.*;
 
-import com.google.common.collect.*;
+import org.carrot2.shaded.guava.common.collect.*;
 
 /**
  * Hierarchically clusters documents according to their content URLs.

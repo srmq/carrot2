@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,17 +12,17 @@
 
 package org.carrot2.dcs;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static org.carrot2.core.test.assertions.Carrot2CoreAssertions.assertThatClusters;
 import static org.carrot2.dcs.RestProcessorServlet.DISABLE_LOGFILE_APPENDER;
 import static org.carrot2.dcs.RestProcessorServlet.ENABLE_CLASSPATH_LOCATOR;
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import org.apache.http.*;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -51,8 +51,9 @@ import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.xml.XmlPage;
-import com.google.common.collect.*;
-import com.google.common.io.Files;
+
+import org.carrot2.shaded.guava.common.collect.*;
+import org.carrot2.shaded.guava.common.io.Files;
 
 /**
  * Test cases for the {@link DcsApp}.
@@ -60,6 +61,7 @@ import com.google.common.io.Files;
 @Nightly
 @ThreadLeakLingering(linger = 1000)
 @ThreadLeakScope(Scope.SUITE)
+@SuppressWarnings("deprecation")
 public class DcsAppTest extends CarrotTestCase
 {
     private static DcsApp dcs;
@@ -319,7 +321,7 @@ public class DcsAppTest extends CarrotTestCase
             "dcs.algorithm", "url"
         ));
         assertThatClusters(result.getClusters()).isNotEmpty();
-        assertThat(result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
+        assertThat((String) result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
     }
 
     @UsesExternalServices
@@ -333,7 +335,7 @@ public class DcsAppTest extends CarrotTestCase
             "dcs.algorithm", "url"
         ));
         assertThatClusters(result.getClusters()).isNotEmpty();
-        assertThat(result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
+        assertThat((String) result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
     }
 
     @Test
@@ -346,7 +348,7 @@ public class DcsAppTest extends CarrotTestCase
             "dcs.c2stream", new String(Files.toByteArray(testFiles.get(KEY_KACZYNSKI)), "UTF-8")
         ));
         assertThatClusters(result.getClusters()).isNotEmpty();
-        assertThat(result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
+        assertThat((String) result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
     }
 
     @Test
@@ -376,17 +378,15 @@ public class DcsAppTest extends CarrotTestCase
         final ProcessingResult result = post(KEY_KACZYNSKI,
             ImmutableMap.<String, Object> of());
         assertThatClusters(result.getClusters()).isNotEmpty();
-        assertThat(result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
-        assertThat(result.getAttribute("DocumentAssigner.exactPhraseAssignment"))
-            .isEqualTo(true);
+        assertThat((String) result.getAttribute(AttributeNames.QUERY)).isEqualTo("kaczyński");
+        assertThat((Boolean) result.getAttribute("DocumentAssigner.exactPhraseAssignment")).isEqualTo(true);
         final int initialClusterCount = result.getClusters().size();
 
         // Override query
         final String otherQuery = "other query";
         final ProcessingResult overriddenQueryResult = post(KEY_KACZYNSKI,
             ImmutableMap.<String, Object> of(AttributeNames.QUERY, otherQuery));
-        assertThat(overriddenQueryResult.getAttribute(AttributeNames.QUERY)).isEqualTo(
-            otherQuery);
+        assertThat((String) overriddenQueryResult.getAttribute(AttributeNames.QUERY)).isEqualTo(otherQuery);
 
         // Override some attributes
         final ProcessingResult overriddenAttributesResult = post(KEY_KACZYNSKI,
@@ -399,7 +399,7 @@ public class DcsAppTest extends CarrotTestCase
         // input attributes to output exactly in the form they were provided, from string
         // type conversion is performed only for the purposes of binding to the
         // component's fields.
-        assertThat(
+        assertThat((String)
             overriddenAttributesResult
                 .getAttribute("LingoClusteringAlgorithm.desiredClusterCountBase")).isEqualTo("5");
 
@@ -412,7 +412,7 @@ public class DcsAppTest extends CarrotTestCase
         // Click on the appropriate radio option to enable fields
         ((HtmlRadioButtonInput) (form.getPage().getByXPath("//input[@value = 'from-string']").get(0))).click();
         form.getTextAreaByName("dcs.c2stream").setText(
-            Files.toString(testFiles.get(KEY_KACZYNSKI), UTF_8));
+            Files.toString(testFiles.get(KEY_KACZYNSKI), StandardCharsets.UTF_8));
         return form;
     }
 
@@ -429,7 +429,7 @@ public class DcsAppTest extends CarrotTestCase
         final String responseXml = dcsResponse.asXml();
 
         final ProcessingResult dcsResult = ProcessingResult
-            .deserialize(new ByteArrayInputStream(responseXml.getBytes(UTF_8)));
+            .deserialize(new ByteArrayInputStream(responseXml.getBytes(StandardCharsets.UTF_8)));
         assertThat(dcsResult.getAttributes().get(AttributeNames.QUERY)).isEqualTo(query);
         if (onlyClusters)
         {
@@ -500,58 +500,59 @@ public class DcsAppTest extends CarrotTestCase
     private ProcessingResult getOrPost(RequestType requestType, Map<String, Object> otherAttributes)
         throws IllegalStateException, Exception
     {
-        final HttpClient client = new DefaultHttpClient();
-        final HttpRequestBase request;
-        switch (requestType)
-        {
-            case POST_MULTIPART:
-                HttpPost post = new HttpPost(getDcsUrl("dcs/rest"));
-                post.setEntity(multipartParams(otherAttributes));
-                request = post;
-                break;
-
-            case POST_WWW_URL_ENCODING:
-                post = new HttpPost(getDcsUrl("dcs/rest"));
-                post.setEntity(new UrlEncodedFormEntity(formParams(otherAttributes), "UTF-8"));
-                request = post;
-                break;
-
-            case GET:
-                request = new HttpGet(
-                    getDcsUrl("dcs/rest") + "?" 
-                        + URLEncodedUtils.format(formParams(otherAttributes), "UTF-8"));
-                break;
-
-            default:
-                throw new RuntimeException();
-        }
-
-        try
-        {
-            HttpResponse response = client.execute(request);
-            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK)
-            {
-                throw new IOException("Unexpected DCS response: "
-                    + response.getStatusLine());
-            }
-
-            return ProcessingResult.deserialize(response.getEntity().getContent());
-        }
-        finally
-        {
-            client.getConnectionManager().shutdown();
+        try (final DefaultHttpClient client = new DefaultHttpClient()) {
+          final HttpRequestBase request;
+          switch (requestType)
+          {
+              case POST_MULTIPART:
+                  HttpPost post = new HttpPost(getDcsUrl("dcs/rest"));
+                  post.setEntity(multipartParams(otherAttributes));
+                  request = post;
+                  break;
+  
+              case POST_WWW_URL_ENCODING:
+                  post = new HttpPost(getDcsUrl("dcs/rest"));
+                  post.setEntity(new UrlEncodedFormEntity(formParams(otherAttributes), "UTF-8"));
+                  request = post;
+                  break;
+  
+              case GET:
+                  request = new HttpGet(
+                      getDcsUrl("dcs/rest") + "?" 
+                          + URLEncodedUtils.format(formParams(otherAttributes), "UTF-8"));
+                  break;
+  
+              default:
+                  throw new RuntimeException();
+          }
+  
+          try
+          {
+              HttpResponse response = client.execute(request);
+              if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK)
+              {
+                  throw new IOException("Unexpected DCS response: "
+                      + response.getStatusLine());
+              }
+  
+              return ProcessingResult.deserialize(response.getEntity().getContent());
+          }
+          finally
+          {
+              client.getConnectionManager().shutdown();
+          }
         }
     }
 
     private HttpEntity multipartParams(Map<String, Object> attributes) throws UnsupportedEncodingException
     {
-        final MultipartEntity body = new MultipartEntity(HttpMultipartMode.STRICT, null, UTF_8);
+        final MultipartEntity body = new MultipartEntity(HttpMultipartMode.STRICT, null, StandardCharsets.UTF_8);
         for (Map.Entry<String, Object> entry : attributes.entrySet())
         {
             if (entry.getValue() instanceof ContentBody) {
                 body.addPart(entry.getKey(), (ContentBody) entry.getValue());
             } else {
-                body.addPart(entry.getKey(), new StringBody(entry.getValue().toString(), UTF_8));
+                body.addPart(entry.getKey(), new StringBody(entry.getValue().toString(), StandardCharsets.UTF_8));
             }
         }
         return body;

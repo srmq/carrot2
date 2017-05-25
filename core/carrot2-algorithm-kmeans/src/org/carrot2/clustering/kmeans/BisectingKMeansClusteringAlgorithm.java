@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -18,11 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.apache.mahout.math.function.Functions;
-import org.apache.mahout.math.matrix.DoubleMatrix1D;
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix1D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.core.Cluster;
 import org.carrot2.core.Document;
 import org.carrot2.core.IClusteringAlgorithm;
@@ -59,13 +54,19 @@ import org.carrot2.util.attribute.constraint.ImplementingClasses;
 import org.carrot2.util.attribute.constraint.IntRange;
 
 import com.carrotsearch.hppc.IntArrayList;
+import com.carrotsearch.hppc.IntIntHashMap;
 import com.carrotsearch.hppc.IntIntMap;
-import com.carrotsearch.hppc.IntIntOpenHashMap;
 import com.carrotsearch.hppc.cursors.IntCursor;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import com.carrotsearch.hppc.sorting.IndirectComparator;
 import com.carrotsearch.hppc.sorting.IndirectSort;
-import com.google.common.collect.Lists;
+
+import org.carrot2.mahout.math.function.Functions;
+import org.carrot2.mahout.math.matrix.DoubleMatrix1D;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix1D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.carrot2.shaded.guava.common.collect.Lists;
 
 /**
  * A very simple implementation of bisecting k-means clustering. Unlike other algorithms
@@ -73,7 +74,6 @@ import com.google.common.collect.Lists;
  * cluster). On the other hand, the clusters are labeled only with individual words that
  * may not always fully correspond to all documents in the cluster.
  */
-@SuppressWarnings("deprecation")
 @Bindable(prefix = "BisectingKMeansClusteringAlgorithm", inherit = CommonAttributes.class)
 public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase implements
     IClusteringAlgorithm
@@ -252,7 +252,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
             matrixBuilder.buildTermPhraseMatrix(vsmContext);
 
             // Prepare rowIndex -> stemIndex mapping for labeling
-            final IntIntOpenHashMap rowToStemIndex = new IntIntOpenHashMap();
+            final IntIntHashMap rowToStemIndex = new IntIntHashMap();
             for (IntIntCursor c : vsmContext.stemToRowIndex)
             {
                 rowToStemIndex.put(c.value, c.key);
@@ -342,7 +342,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
     };
     
     private List<String> getLabels(IntArrayList documents,
-        DoubleMatrix2D termDocumentMatrix, IntIntOpenHashMap rowToStemIndex,
+        DoubleMatrix2D termDocumentMatrix, IntIntHashMap rowToStemIndex,
         int [] mostFrequentOriginalWordIndex, char [][] wordImage)
     {
         // Prepare a centroid. If dimensionality reduction was used,
@@ -397,7 +397,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
         // Prepare selected matrix
         final DoubleMatrix2D selected = input.viewSelection(null, columns.toArray())
             .copy();
-        final IntIntMap selectedToInput = new IntIntOpenHashMap(selected.columns());
+        final IntIntMap selectedToInput = new IntIntHashMap(selected.columns());
         for (int i = 0; i < columns.size(); i++)
         {
             selectedToInput.put(i, columns.get(i));
@@ -439,14 +439,11 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
                 }
             }
 
-            //if (it < iterations - 1) srmq
+            previousResult = result;
+            result = Lists.newArrayList();
+            for (int i = 0; i < partitions; i++)
             {
-                previousResult = result;
-                result = Lists.newArrayList();
-                for (int i = 0; i < partitions; i++)
-                {
-                    result.add(new IntArrayList(selected.columns()));
-                }
+                result.add(new IntArrayList(selected.columns()));
             }
 
             // Calculate similarity to centroids

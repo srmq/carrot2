@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -13,8 +13,12 @@
 package org.carrot2.workbench.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +32,9 @@ import org.carrot2.core.IClusteringAlgorithm;
 import org.carrot2.core.IDocumentSource;
 import org.carrot2.core.ProcessingComponentDescriptor;
 import org.carrot2.core.ProcessingComponentSuite;
+import org.carrot2.shaded.guava.common.base.Objects;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
 import org.carrot2.text.linguistic.DefaultLexicalDataFactoryDescriptor;
 import org.carrot2.util.attribute.BindableDescriptor;
 import org.carrot2.util.resource.DirLocator;
@@ -36,14 +43,12 @@ import org.carrot2.util.resource.IResourceLocator;
 import org.carrot2.util.resource.PrefixDecoratorLocator;
 import org.carrot2.util.resource.ResourceLookup;
 import org.carrot2.util.resource.ResourceLookup.Location;
-import org.carrot2.util.resource.URLResource;
 import org.carrot2.workbench.core.helpers.Utils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -53,9 +58,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * The activator class (plug-in's entry point), controls the life-cycle and contains a
@@ -113,7 +115,6 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
     /**
      * Starts the bundle: scan suites and initialize the controller.
      */
-    @SuppressWarnings("unchecked")
     public void start(BundleContext context) throws Exception
     {
         super.start(context);
@@ -158,7 +159,20 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
             {
                 try
                 {
-                    instanceLocation.set(installLocation.getDataArea("workspace"), true);
+                    // CARROT-1147: if instance location is inside the .app folder, search for
+                    // workspace.
+                    if (Objects.equal(Platform.getOS(), Platform.OS_MACOSX)) {
+                      Path installPath = Paths.get(installLocation.getURL().toURI());
+                      Path workspace = installPath.resolve("../../../workspace");
+                      if (Files.exists(workspace)) {
+                        instanceLocation.set(workspace.toUri().toURL(), true);
+                      } else {
+                        instanceLocation.set(Platform.getUserLocation().getDataArea("workspace"), true);
+                      }
+                    } else {
+                      instanceLocation.set(installLocation.getDataArea("workspace"), true);
+                    }
+
                     logger.info("Changed instanceLocation to: " + instanceLocation.getURL());
                 }
                 catch (Exception e)
@@ -317,9 +331,13 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
                     }
                 }
 
-                final ResourceLookup resourceLookup = new ResourceLookup(
-                    workspaceLocator,
-                    new PrefixDecoratorLocator(new BundleResourceLocator(b), suiteRoot));
+                ArrayList<IResourceLocator> locators = new ArrayList<>();
+                if (workspaceLocator != null) {
+                  locators.add(workspaceLocator);
+                }
+                locators.add(new PrefixDecoratorLocator(new BundleResourceLocator(b), suiteRoot));
+                
+                final ResourceLookup resourceLookup = new ResourceLookup(locators);
 
                 IResource suiteResource = resourceLookup.getFirst(suiteResourceName);
                 if (suiteResource == null)
@@ -449,27 +467,43 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
         }
         
         // Invalid URLs may fail when converting to an URI. If so, try brute-force approach.
-        File workspacePath;
+        Path workspacePath;
         try {
-            workspacePath = URIUtil.toFile(instanceLocation.toURI());
+            workspacePath = Paths.get(instanceLocation.toURI());
         } catch (URISyntaxException e) {
-            workspacePath = new File(instanceLocation.getFile());
+            Utils.logError("Instance location URI unparseable via .toURI(): " 
+                + instanceLocation, false);
         }
         
-        workspacePath = workspacePath.getAbsoluteFile();
-        if (!workspacePath.exists())
-        {
-            workspacePath.mkdirs();
+        try {
+          // we know it's a file URL, so get the path directly.
+          workspacePath = new File(instanceLocation.getPath()).toPath();
+        } catch (Exception e) {
+          Utils.logError("Instance location URI couldn't be parsed: "
+              + instanceLocation, e, false);
+          return null;
         }
 
-        if (!workspacePath.exists())
+        
+        workspacePath = workspacePath.toAbsolutePath();
+        if (!Files.exists(workspacePath))
+        {
+            try {
+              Files.createDirectories(workspacePath);
+            } catch (IOException e) {
+              Utils.logError("Could not create workspace folder.", e, false);
+              return null;
+            }
+        }
+
+        if (!Files.exists(workspacePath))
         {
             // Issue a warning about read-only location.
             Utils.logError("Instance location does not exist: " + workspacePath, false);
             return null;
         }
 
-        return new DirLocator(workspacePath.getAbsoluteFile());
+        return new DirLocator(workspacePath);
     }
 
     /**

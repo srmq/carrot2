@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -66,11 +66,6 @@ public final class XSLTFilter implements Filter
     private ServletContext context;
 
     /**
-     * Filter configuration.
-     */
-    private FilterConfig filterConfig;
-
-    /**
      * Place this filter into service.
      * 
      * @param filterConfig The filter configuration object
@@ -84,11 +79,8 @@ public final class XSLTFilter implements Filter
 
         this.context = filterConfig.getServletContext();
 
-        final boolean templateCaching = getBooleanInit(filterConfig,
-            PARAM_TEMPLATE_CACHING, true);
+        final boolean templateCaching = getBooleanInit(filterConfig, PARAM_TEMPLATE_CACHING, true);
         
-        this.filterConfig = filterConfig;
-
         try
         {
             pool = new TemplatesPool(templateCaching);

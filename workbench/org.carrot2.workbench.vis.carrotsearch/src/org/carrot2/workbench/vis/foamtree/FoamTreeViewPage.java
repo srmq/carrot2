@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -72,6 +72,7 @@ final class FoamTreeViewPage extends AbstractBrowserVisualizationViewPage
     @Override
     protected void onBrowserReady()
     {
+    	super.onBrowserReady();
         passAttributes();
     }
     

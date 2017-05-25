@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -45,8 +45,8 @@ import org.eclipse.ui.progress.UIJob;
 
 import biz.aduna.map.cluster.*;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * A single {@link AdunaClusterMapViewPage} page embeds Aduna's Swing component with
@@ -413,13 +413,18 @@ final class AdunaClusterMapViewPage extends Page
 
         final Frame frame = SWT_AWT.new_Frame(embedded);
         frame.setLayout(new java.awt.BorderLayout());
+        
+        // LINGO-446: flicker fix; see "Creating a Root Pane Container" in http://www.eclipse.org/articles/article.php?file=Article-Swing-SWT-Integration/index.html
+        final JApplet applet = new JApplet();
+        frame.add(applet);
+        applet.setLayout(new java.awt.BorderLayout());
 
         final JScrollPane scrollPanel = new JScrollPane(
             JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPanel.setDoubleBuffered(true);
 
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(scrollPanel, java.awt.BorderLayout.CENTER);
+        applet.getContentPane().add(scrollPanel, java.awt.BorderLayout.CENTER);
 
         final ClusterMapFactory factory = ClusterMapFactory.createFactory();
         final ClusterMap clusterMap = factory.createClusterMap();
@@ -427,6 +432,7 @@ final class AdunaClusterMapViewPage extends Page
         this.mapMediator = mapMediator;
 
         final ClusterGraphPanel graphPanel = mapMediator.getGraphPanel();
+        graphPanel.setDoubleBuffered(true);
         scrollPanel.setViewportView(graphPanel);
 
         scrollable.addControlListener(new ControlAdapter()

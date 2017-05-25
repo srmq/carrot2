@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -72,7 +72,7 @@ public final class LayoutInitializerAction extends Action
         LayoutAlgorithm [] constants = LayoutAlgorithm.values();
         this.menuCreator = DropDownMenuAction.getMenuFor(propertyKey, getText(), constants, host);
 
-        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Activator.ID, "icons/enabled/layout.gif"));
+        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Activator.ID, "icons/enabled/layout.png"));
         setMenuCreator(menuCreator);
     }
 

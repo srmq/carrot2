@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -51,10 +51,10 @@ import org.xml.sax.XMLReader;
 public class PubMedDocumentSource extends SimpleSearchEngine
 {
     /** PubMed search service URL */
-    public static final String E_SEARCH_URL = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi";
+    public static final String E_SEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi";
 
     /** PubMed fetch service URL */
-    public static final String E_FETCH_URL = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi";
+    public static final String E_FETCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi";
 
     /** HTTP timeout for pubmed services.*/
     public static final int PUBMED_TIMEOUT = HttpClientFactory.DEFAULT_TIMEOUT * 3;

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,8 +12,7 @@
 
 package org.carrot2.core;
 
-import static org.carrot2.core.test.assertions.Carrot2CoreAssertions.assertThatClusters;
-import static org.carrot2.core.test.assertions.Carrot2CoreAssertions.assertThatDocuments;
+import static org.carrot2.core.test.assertions.Carrot2CoreAssertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,23 +20,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.output.NullOutputStream;
 import org.carrot2.core.attribute.AttributeNames;
 import org.carrot2.util.CloseableUtils;
 import org.carrot2.util.CollectionUtils;
 import org.carrot2.util.tests.CarrotTestCase;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
+
+import static org.junit.Assert.*;
 
 /**
  * Test cases for {@link ProcessingResult}.
@@ -98,7 +103,7 @@ public class ProcessingResultTest extends CarrotTestCase
         assertEquals(title, deserializedDocument.getField(Document.TITLE));
         assertEquals(snippet, deserializedDocument.getField(Document.SUMMARY));
         assertEquals(url, deserializedDocument.getField(Document.CONTENT_URL));
-        assertEquals(null, deserializedDocument.getField(Document.LANGUAGE));
+        assertNull(deserializedDocument.getField(Document.LANGUAGE));
         Assertions.assertThat(deserialized.getAttributes().get(AttributeNames.QUERY))
             .isEqualTo(query);
     }
@@ -337,22 +342,21 @@ public class ProcessingResultTest extends CarrotTestCase
         assertEquals("a", (a = pr.getClusters().get(0)).getLabel());
         assertEquals("b", (b = pr.getClusters().get(1)).getLabel());
         assertEquals("c", (c = pr.getClusters().get(2)).getLabel());
-        assertThat(a.getAttribute(Cluster.OTHER_TOPICS)).isNull();
-        assertThat(b.getAttribute(Cluster.OTHER_TOPICS)).isNull();
-        assertThat(c.getAttribute(Cluster.OTHER_TOPICS)).isEqualTo(Boolean.TRUE);
+        assertThat((Object) a.getAttribute(Cluster.OTHER_TOPICS)).isNull();
+        assertThat((Object) b.getAttribute(Cluster.OTHER_TOPICS)).isNull();
+        assertThat((Object) c.getAttribute(Cluster.OTHER_TOPICS)).isEqualTo(Boolean.TRUE);
     }
 
     private void checkJsonQuery(final JsonNode root)
     {
-        Assertions.assertThat(root.get("query").getTextValue()).isEqualTo("query");
+        Assertions.assertThat(root.get("query").textValue()).isEqualTo("query");
     }
 
     private void checkJsonClusters(final ProcessingResult result, final JsonNode root)
     {
         final JsonNode clusters = root.get("clusters");
         Assertions.assertThat(clusters).isNotNull();
-        final ArrayList<JsonNode> clusterNodes = Lists.newArrayList(clusters
-            .getElements());
+        final ArrayList<JsonNode> clusterNodes = Lists.newArrayList(clusters.elements());
         Assertions.assertThat(clusterNodes).hasSize(result.getClusters().size());
     }
 
@@ -360,8 +364,7 @@ public class ProcessingResultTest extends CarrotTestCase
     {
         final JsonNode documents = root.get("documents");
         Assertions.assertThat(documents).isNotNull();
-        final ArrayList<JsonNode> documentNodes = Lists.newArrayList(documents
-            .getElements());
+        final ArrayList<JsonNode> documentNodes = Lists.newArrayList(documents.elements());
         Assertions.assertThat(documentNodes).hasSize(result.getDocuments().size());
     }
 
@@ -376,7 +379,12 @@ public class ProcessingResultTest extends CarrotTestCase
     private String getJsonString(final ProcessingResult result, String callback,
         boolean saveDocuments, boolean saveClusters, boolean saveAttributes) throws IOException
     {
-        final StringWriter json = new StringWriter();
+        final StringWriter json = new StringWriter() {
+          @Override
+          public void close() throws IOException {
+            throw new IOException("Should not be calling close.");
+          }
+        };
         result.serializeJson(json, callback, false, saveDocuments, saveClusters, saveAttributes);
         return json.toString();
     }
@@ -384,8 +392,7 @@ public class ProcessingResultTest extends CarrotTestCase
     private JsonNode getJsonRootNode(final String jsonString) throws IOException,
         JsonParseException
     {
-        final JsonParser jsonParser = new JsonFactory()
-            .createJsonParser(new StringReader(jsonString));
+        final JsonParser jsonParser = new JsonFactory().createParser(new StringReader(jsonString));
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode root = mapper.readTree(jsonParser);
         return root;
@@ -430,12 +437,12 @@ public class ProcessingResultTest extends CarrotTestCase
 
         if (attributesDeserialized)
         {
-            Assertions.assertThat(deserialized.getAttribute(AttributeNames.RESULTS))
+            Assertions.assertThat((Object) deserialized.getAttribute(AttributeNames.RESULTS))
                 .isEqualTo(sourceProcessingResult.getAttribute(AttributeNames.RESULTS));
         }
         else
         {
-            Assertions.assertThat(deserialized.getAttribute(AttributeNames.RESULTS))
+            Assertions.assertThat((Object) deserialized.getAttribute(AttributeNames.RESULTS))
                 .isNull();
         }
 

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -23,7 +23,7 @@ import javax.servlet.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.*;
 
-import com.google.common.collect.*;
+import org.carrot2.shaded.guava.common.collect.*;
 
 /**
  * Initializes file appenders to save logs to files named after the context path. Works

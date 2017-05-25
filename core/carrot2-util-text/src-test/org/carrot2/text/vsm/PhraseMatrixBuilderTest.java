@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -14,14 +14,12 @@ package org.carrot2.text.vsm;
 
 import org.fest.assertions.Assertions;
 import org.junit.Test;
-
-import org.apache.mahout.math.matrix.*;
+import org.carrot2.mahout.math.matrix.*;
 import org.carrot2.matrix.MatrixAssertions;
 
 /**
  * Test cases for phrase matrix building.
  */
-@SuppressWarnings("deprecation")
 public class PhraseMatrixBuilderTest extends TermDocumentMatrixBuilderTestBase
 {
     @Test

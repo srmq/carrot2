@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -20,7 +20,7 @@ import org.carrot2.util.ExceptionUtils;
 import org.carrot2.util.ReflectionUtils;
 import org.simpleframework.xml.*;
 
-import com.google.common.collect.ImmutableSet;
+import org.carrot2.shaded.guava.common.collect.ImmutableSet;
 
 /**
  * A wrapper around typical serialized types, such as primitives. Without this wrapper

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -22,7 +22,7 @@ import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.strategy.Strategy;
 
-import com.google.common.collect.ImmutableMap;
+import org.carrot2.shaded.guava.common.collect.ImmutableMap;
 
 /**
  * Simple XML session context helpers.
@@ -84,8 +84,12 @@ public final class PersisterHelpers
             inputStream = new BufferedInputStream(res.open());
             try
             {
-                return PersisterHelpers.createPersister(resourceLookup, 
-                    new AnnotationStrategy()).read(clazz, inputStream);
+                T read = PersisterHelpers.createPersister(resourceLookup, new AnnotationStrategy()).read(clazz, inputStream);
+                if (read instanceof ISourceLocationAware)
+                {
+                    ((ISourceLocationAware) read).setSource(res.toString());
+                }
+                return read;
             }
             catch (IOException e)
             {

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -17,8 +17,8 @@ import java.util.Map;
 import org.carrot2.core.attribute.*;
 import org.carrot2.util.attribute.*;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.base.Predicates;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * Static life cycle and controller utilities (for use within the core package).
@@ -39,7 +39,6 @@ final class ControllerUtils
     /**
      * Performs all life cycle actions required upon initialization.
      */
-    @SuppressWarnings("unchecked")
     public static void init(IProcessingComponent processingComponent,
         Map<String, Object> inputAttributes, Map<String, Object> outputAttributes,
         boolean checkRequiredAttributes, IControllerContext context)
@@ -64,7 +63,6 @@ final class ControllerUtils
     /**
      * Performs all life cycle actions required before processing starts.
      */
-    @SuppressWarnings("unchecked")
     public static void beforeProcessing(IProcessingComponent processingComponent,
         Map<String, Object> attributes) throws ProcessingException
     {
@@ -114,7 +112,6 @@ final class ControllerUtils
     /**
      * Perform all life cycle actions after processing is completed.
      */
-    @SuppressWarnings("unchecked")
     public static void afterProcessing(IProcessingComponent processingComponent,
         Map<String, Object> attributes)
     {

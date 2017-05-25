@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -14,8 +14,8 @@ package org.carrot2.text.linguistic.morfologik;
 
 import java.util.List;
 
-import morfologik.stemming.PolishStemmer;
 import morfologik.stemming.WordData;
+import morfologik.stemming.polish.PolishStemmer;
 
 import org.carrot2.text.linguistic.IStemmer;
 

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -38,8 +38,8 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.core.Commit;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.base.Function;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * Descriptor of a {@link IProcessingComponent} being part of a
@@ -202,7 +202,6 @@ public class ProcessingComponentDescriptor
      * is returned.
      * </p>
      */
-    @SuppressWarnings("unchecked")
     private IProcessingComponent newInitializedInstance()
         throws InstantiationException, IllegalAccessException
     {
@@ -317,7 +316,6 @@ public class ProcessingComponentDescriptor
      * On commit, attempt to verify component class and instance availability.
      */
     @Commit
-    @SuppressWarnings({"unused"})
     private void onCommit(Map<Object, Object> session)
     {
         this.initializationException = null;

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,14 +12,13 @@
 
 package org.carrot2.text.vsm;
 
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
 
 /**
  * Stores data related a Vector Space Model with reduced dimensionality.
  * 
  * @see TermDocumentMatrixReducer
  */
-@SuppressWarnings("deprecation")
 public class ReducedVectorSpaceModelContext
 {
     /** Vector Space Model context for the underlying documents. */

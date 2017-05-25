@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -23,7 +23,7 @@ public class QueryStringEditor extends StringEditor
     @Override
     protected Text createTextBox(Composite parent, int gridColumns)
     {
-        Text textBox = new Text(parent, SWT.SEARCH | SWT.ICON_SEARCH | SWT.BORDER );
+        Text textBox = new Text(parent, SWT.BORDER );
         textBox.setLayoutData(
             GUIFactory.editorGridData()
                 .grab(true, false)

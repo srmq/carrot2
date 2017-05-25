@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -22,6 +22,8 @@ import org.carrot2.util.attribute.constraint.ImplementingClasses;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests pooling functionality of a {@link Controller}.
@@ -116,12 +118,12 @@ public abstract class ControllerTestsPooling extends ControllerTestsBase
         final BindableInstanceCounter overridden = new BindableInstanceCounter();
         processingAttributes.put("bindable", overridden);
         performProcessing(ComponentWithBindableReference.class);
-        assertThat(result.getAttribute("bindable")).isSameAs(overridden);
+        assertThat((Object) result.getAttribute("bindable")).isSameAs(overridden);
 
         // Perform processing with no attributes. The initial value should be restored.
         processingAttributes.clear();
         performProcessingAndDispose(ComponentWithBindableReference.class);
-        assertThat(result.getAttribute("bindable")).isSameAs(initial);
+        assertThat((Object) result.getAttribute("bindable")).isSameAs(initial);
     }
 
     @Test(expected = ProcessingException.class)
@@ -219,19 +221,19 @@ public abstract class ControllerTestsPooling extends ControllerTestsBase
         @Input
         @Attribute(key = "threadSafe")
         @ImplementingClasses(classes = {}, strict = false)
-        ThreadSafeClass threadSafe = new ThreadSafeClass();
+        public ThreadSafeClass threadSafe = new ThreadSafeClass();
 
         @Init
         @Input
         @Attribute(key = "nonThreadSafeInit")
         @ImplementingClasses(classes = {}, strict = false)
-        NonThreadSafeClass nonThreadSafeInit = new NonThreadSafeClass();
+        public NonThreadSafeClass nonThreadSafeInit = new NonThreadSafeClass();
         
         @Processing
         @Input
         @Attribute(key = "nonThreadSafeProcessing")
         @ImplementingClasses(classes = {}, strict = false)
-        NonThreadSafeClass nonThreadSafeProcessing = new NonThreadSafeClass();
+        public NonThreadSafeClass nonThreadSafeProcessing = new NonThreadSafeClass();
     }
     
     @ThreadSafe

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,7 +12,7 @@
 
 package org.carrot2.text.linguistic;
 
-import static org.carrot2.util.resource.ResourceLookup.Location.CONTEXT_CLASS_LOADER;
+import static org.carrot2.util.resource.ResourceLookup.Location.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,11 +48,11 @@ import org.carrot2.util.resource.ResourceLookup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.carrotsearch.hppc.ObjectOpenHashSet;
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.carrotsearch.hppc.ObjectHashSet;
+import org.carrot2.shaded.guava.common.base.Function;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Sets;
 
 /**
  * The default management of lexical resources. Resources are read from disk, cached and shared 
@@ -150,7 +150,7 @@ public class DefaultLexicalDataFactory implements ILexicalDataFactory
     private static HashMap<LanguageCode, ILexicalData> reloadResources(ResourceLookup resourceLookup)
     {
         // Load lexical resources.
-        ObjectOpenHashSet<MutableCharArray> mergedStopwords = ObjectOpenHashSet.newInstance();
+        ObjectHashSet<MutableCharArray> mergedStopwords = new ObjectHashSet<>();
         ArrayList<Pattern> mergedStoplabels = Lists.newArrayList();
 
         HashMap<LanguageCode, ILexicalData> resourceMap = Maps.newHashMap();
@@ -158,8 +158,7 @@ public class DefaultLexicalDataFactory implements ILexicalDataFactory
         {
             final String isoCode = languageCode.getIsoCode();
 
-            ObjectOpenHashSet<MutableCharArray> stopwords = 
-                toLower(load(resourceLookup, "stopwords." + isoCode));
+            ObjectHashSet<MutableCharArray> stopwords = toLower(load(resourceLookup, "stopwords." + isoCode));
             ArrayList<Pattern> stoplabels = 
                 compile(load(resourceLookup, "stoplabels." + isoCode));
 
@@ -176,10 +175,10 @@ public class DefaultLexicalDataFactory implements ILexicalDataFactory
     /**
      * All entries to lowercase.
      */
-    private static ObjectOpenHashSet<MutableCharArray> toLower(Set<String> input)
+    private static ObjectHashSet<MutableCharArray> toLower(Set<String> input)
     {
-        ObjectOpenHashSet<MutableCharArray> cloned = 
-            new ObjectOpenHashSet<MutableCharArray>(input.size());
+        ObjectHashSet<MutableCharArray> cloned = 
+            new ObjectHashSet<MutableCharArray>(input.size());
 
         for (String entry : input)
         {

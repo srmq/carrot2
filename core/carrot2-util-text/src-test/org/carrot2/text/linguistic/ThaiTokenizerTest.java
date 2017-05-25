@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -57,6 +57,6 @@ public class ThaiTokenizerTest extends TokenizerTestBase
     {
         Assume.assumeTrue(Platform.getPlatform() != Platform.DOTNET);
         Assume.assumeTrue(ThaiTokenizerAdapter.platformSupportsThai());
-        assertEqualTokens("๑๒๓", tokens(ITokenizer.TT_NUMERIC, "๑๒๓"));
+        assertEqualTokens("๑๒๓", tokens(ITokenizer.TT_TERM, "๑๒๓"));
     }
 }

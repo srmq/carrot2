@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -14,10 +14,10 @@ package org.carrot2.matrix;
 
 import java.util.Arrays;
 
-import org.apache.mahout.math.function.DoubleFunction;
-import org.apache.mahout.math.function.Functions;
-import org.apache.mahout.math.function.IntIntDoubleFunction;
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.function.DoubleFunction;
+import org.carrot2.mahout.math.function.Functions;
+import org.carrot2.mahout.math.function.IntIntDoubleFunction;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
 
 import com.carrotsearch.hppc.sorting.IndirectComparator;
 import com.carrotsearch.hppc.sorting.IndirectSort;
@@ -25,7 +25,6 @@ import com.carrotsearch.hppc.sorting.IndirectSort;
 /**
  * A set of <code>DoubleMatrix2D</code> shorthands and utility methods.
  */
-@SuppressWarnings("deprecation")
 public class MatrixUtils
 {
     /**
@@ -256,7 +255,6 @@ public class MatrixUtils
      * maximum values for each column this version should perform better than scanning
      * each column separately.
      * 
-     * @param A
      * @param indices an array of <code>A.columns()</code> integers in which indices of
      *            the first maximum element will be stored. If this parameter is
      *            <code>null</code> a new array will be allocated.

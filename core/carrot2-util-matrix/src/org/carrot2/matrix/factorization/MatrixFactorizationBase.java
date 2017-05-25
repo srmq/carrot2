@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,12 +12,11 @@
 
 package org.carrot2.matrix.factorization;
 
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
 
 /**
  * Abstract implementation of the {@link IMatrixFactorization} interface.
  */
-@SuppressWarnings("deprecation")
 abstract class MatrixFactorizationBase implements IMatrixFactorization
 {
     /** Input matrix */

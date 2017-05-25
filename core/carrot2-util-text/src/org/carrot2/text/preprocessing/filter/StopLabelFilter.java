@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -41,12 +41,12 @@ public class StopLabelFilter extends SingleLabelFilterBase
     /*
      * 
      */
-    private final LabelFormatter labelFormatter = new LabelFormatter();
+    public final LabelFormatter labelFormatter = new LabelFormatter();
 
     /*
      * 
      */
-    private ILexicalData lexicalData;
+    public ILexicalData lexicalData;
 
     @Override
     public void filter(PreprocessingContext context, boolean [] acceptedStems,

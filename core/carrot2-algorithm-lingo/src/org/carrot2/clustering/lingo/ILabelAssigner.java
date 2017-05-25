@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,15 +12,14 @@
 
 package org.carrot2.clustering.lingo;
 
-import org.apache.mahout.math.matrix.*;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
 import org.carrot2.text.preprocessing.PreprocessingContext;
 
-import com.carrotsearch.hppc.IntIntOpenHashMap;
+import com.carrotsearch.hppc.IntIntHashMap;
 
 /**
  * Assigns labels to base vectors obtained from the factorization.
  */
-@SuppressWarnings("deprecation")
 public interface ILabelAssigner
 {
     /**
@@ -35,5 +34,5 @@ public interface ILabelAssigner
      * @param phraseCos base vector -- phrase cosine matrix
      */
     public void assignLabels(LingoProcessingContext context, DoubleMatrix2D stemCos,
-        final IntIntOpenHashMap filteredRowToStemIndex, DoubleMatrix2D phraseCos);
+        final IntIntHashMap filteredRowToStemIndex, DoubleMatrix2D phraseCos);
 }

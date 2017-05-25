@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,7 +12,7 @@
 
 package org.carrot2.clustering.lingo;
 
-import org.apache.mahout.math.matrix.*;
+import org.carrot2.mahout.math.matrix.*;
 import org.carrot2.text.preprocessing.PreprocessingContext;
 import org.carrot2.util.Pair;
 import org.carrot2.util.attribute.Bindable;
@@ -28,12 +28,11 @@ import com.carrotsearch.hppc.*;
  * {@link SimpleLabelAssigner}. This method is slightly slower than
  * {@link SimpleLabelAssigner}.
  */
-@SuppressWarnings("deprecation")
 @Bindable
 public class UniqueLabelAssigner implements ILabelAssigner
 {
     public void assignLabels(LingoProcessingContext context, DoubleMatrix2D stemCos,
-        IntIntOpenHashMap filteredRowToStemIndex, DoubleMatrix2D phraseCos)
+        IntIntHashMap filteredRowToStemIndex, DoubleMatrix2D phraseCos)
     {
         final PreprocessingContext preprocessingContext = context.preprocessingContext;
         final int firstPhraseIndex = preprocessingContext.allLabels.firstPhraseIndex;

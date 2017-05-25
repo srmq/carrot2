@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -96,8 +96,8 @@ import org.eclipse.ui.progress.UIJob;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
+import org.carrot2.shaded.guava.common.base.Predicates;
+import org.carrot2.shaded.guava.common.collect.Maps;
 
 /**
  * Editor accepting {@link SearchInput} and performing operations on it. The editor also
@@ -889,7 +889,7 @@ public final class SearchEditor extends EditorPart implements IPersistableEditor
     /**
      * {@link SearchEditor} adaptations.
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("all")
     @Override
     public Object getAdapter(Class adapter)
     {
@@ -1257,7 +1257,6 @@ public final class SearchEditor extends EditorPart implements IPersistableEditor
     /**
      * Get hold of the algorithm instance, extract its attribute descriptors.
      */
-    @SuppressWarnings("unchecked")
     BindableDescriptor getAlgorithmDescriptor()
     {
         final WorkbenchCorePlugin core = WorkbenchCorePlugin.getDefault();

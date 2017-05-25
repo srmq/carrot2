@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -28,10 +28,6 @@ import org.carrot2.util.MapUtils;
 import org.carrot2.util.StringUtils;
 import org.carrot2.util.simplexml.SimpleXmlWrapperValue;
 import org.carrot2.util.simplexml.SimpleXmlWrappers;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonMethod;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
@@ -39,11 +35,15 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.core.Commit;
 import org.simpleframework.xml.core.Persist;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
-import com.google.common.collect.Sets;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.carrot2.shaded.guava.common.base.Function;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Maps;
+import org.carrot2.shaded.guava.common.collect.Ordering;
+import org.carrot2.shaded.guava.common.collect.Sets;
 
 /**
  * A cluster (group) of {@link Document}s. Each cluster has a human-readable label
@@ -52,8 +52,14 @@ import com.google.common.collect.Sets;
  * {@link #OTHER_TOPICS}. This class is <strong>not</strong> thread-safe.
  */
 @Root(name = "group", strict = false)
-@JsonAutoDetect(JsonMethod.NONE)
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonAutoDetect(
+    creatorVisibility  = JsonAutoDetect.Visibility.NONE,
+    fieldVisibility    = JsonAutoDetect.Visibility.NONE,
+    getterVisibility   = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility   = JsonAutoDetect.Visibility.NONE)
+@JsonSerialize()
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class Cluster
 {
     /**

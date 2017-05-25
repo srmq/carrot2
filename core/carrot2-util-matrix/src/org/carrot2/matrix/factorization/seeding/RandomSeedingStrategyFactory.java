@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -68,8 +68,6 @@ public class RandomSeedingStrategyFactory implements ISeedingStrategyFactory
     /**
      * Sets the random seed to be used. Disables seeding with current system
      * time.
-     * 
-     * @param seed
      */
     public void setSeed(int seed)
     {
@@ -88,8 +86,6 @@ public class RandomSeedingStrategyFactory implements ISeedingStrategyFactory
 
     /**
      * Set date seed to true to use current system time as random seed.
-     * 
-     * @param dateSeed
      */
     public void setDateSeed(boolean dateSeed)
     {

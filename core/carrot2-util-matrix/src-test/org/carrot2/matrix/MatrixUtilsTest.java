@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,8 +12,8 @@
 
 package org.carrot2.matrix;
 
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.util.tests.CarrotTestCase;
 import org.fest.assertions.Delta;
 import org.junit.Test;
@@ -23,7 +23,6 @@ import com.carrotsearch.hppc.sorting.IndirectComparator;
 /**
  * Test cases for {@link MatrixUtils}.
  */
-@SuppressWarnings("deprecation")
 public class MatrixUtilsTest extends CarrotTestCase
 {
     @Test

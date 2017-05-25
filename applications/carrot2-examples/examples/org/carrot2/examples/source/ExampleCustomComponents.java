@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
-import org.apache.lucene.util.Version;
 import org.carrot2.core.Controller;
 import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.IClusteringAlgorithm;
@@ -31,7 +30,6 @@ import org.carrot2.examples.SampleDocumentData;
  */
 public class ExampleCustomComponents
 {
-    @SuppressWarnings("deprecation")
     public static void main(String [] args)
     {
         /*
@@ -55,7 +53,7 @@ public class ExampleCustomComponents
                 .results(10)
                 .documents(SampleDocumentData.DOCUMENTS_DATA_MINING)
                 .modulo(2)
-                .analyzer(new WhitespaceAnalyzer(Version.LUCENE_CURRENT));
+                .analyzer(new WhitespaceAnalyzer());
 
             ByFirstTitleLetterClusteringAlgorithmDescriptor.attributeBuilder(params)
                 .caseSensitive(false);

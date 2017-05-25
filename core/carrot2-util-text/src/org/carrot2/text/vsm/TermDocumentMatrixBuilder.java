@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -12,12 +12,12 @@
 
 package org.carrot2.text.vsm;
 
-import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.SparseDoubleMatrix2D;
 import org.carrot2.core.Document;
 import org.carrot2.core.attribute.Internal;
 import org.carrot2.core.attribute.Processing;
+import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.carrot2.mahout.math.matrix.impl.SparseDoubleMatrix2D;
 import org.carrot2.matrix.MatrixUtils;
 import org.carrot2.text.analysis.TokenTypeUtils;
 import org.carrot2.text.preprocessing.PreprocessingContext;
@@ -34,14 +34,13 @@ import org.carrot2.util.attribute.constraint.ImplementingClasses;
 import org.carrot2.util.attribute.constraint.IntRange;
 
 import com.carrotsearch.hppc.BitSet;
-import com.carrotsearch.hppc.IntIntOpenHashMap;
+import com.carrotsearch.hppc.IntIntHashMap;
 import com.carrotsearch.hppc.sorting.IndirectComparator;
 import com.carrotsearch.hppc.sorting.IndirectSort;
 
 /**
  * Builds a term document matrix based on the provided {@link PreprocessingContext}.
  */
-@SuppressWarnings("deprecation")
 @Bindable(prefix = "TermDocumentMatrixBuilder")
 public class TermDocumentMatrixBuilder
 {
@@ -134,7 +133,7 @@ public class TermDocumentMatrixBuilder
         if (documentCount == 0)
         {
             vsmContext.termDocumentMatrix = new DenseDoubleMatrix2D(0, 0);
-            vsmContext.stemToRowIndex = new IntIntOpenHashMap();
+            vsmContext.stemToRowIndex = new IntIntHashMap();
             return;
         }
 
@@ -188,7 +187,7 @@ public class TermDocumentMatrixBuilder
         }
 
         // Convert stemsToInclude into tdMatrixStemIndices
-        final IntIntOpenHashMap stemToRowIndex = new IntIntOpenHashMap();
+        final IntIntHashMap stemToRowIndex = new IntIntHashMap();
         for (int i = 0; i < stemWeightOrder.length && i < tdMatrix.rows(); i++)
         {
             stemToRowIndex.put(stemsToInclude[stemWeightOrder[i]], i);
@@ -207,7 +206,7 @@ public class TermDocumentMatrixBuilder
     public void buildTermPhraseMatrix(VectorSpaceModelContext context)
     {
         final PreprocessingContext preprocessingContext = context.preprocessingContext;
-        final IntIntOpenHashMap stemToRowIndex = context.stemToRowIndex;
+        final IntIntHashMap stemToRowIndex = context.stemToRowIndex;
         final int [] labelsFeatureIndex = preprocessingContext.allLabels.featureIndex;
         final int firstPhraseIndex = preprocessingContext.allLabels.firstPhraseIndex;
 
@@ -306,7 +305,7 @@ public class TermDocumentMatrixBuilder
     static DoubleMatrix2D buildAlignedMatrix(VectorSpaceModelContext vsmContext,
         int [] featureIndex, ITermWeighting termWeighting)
     {
-        final IntIntOpenHashMap stemToRowIndex = vsmContext.stemToRowIndex;
+        final IntIntHashMap stemToRowIndex = vsmContext.stemToRowIndex;
         if (featureIndex.length == 0)
         {
             return new DenseDoubleMatrix2D(stemToRowIndex.size(), 0);
@@ -342,9 +341,10 @@ public class TermDocumentMatrixBuilder
             for (int wordIndex = 0; wordIndex < wordIndices.length; wordIndex++)
             {
                 final int stemIndex = wordsStemIndex[wordIndices[wordIndex]];
-                if (stemToRowIndex.containsKey(stemIndex))
+                final int index = stemToRowIndex.indexOf(stemIndex);
+                if (stemToRowIndex.indexExists(index))
                 {
-                    final int rowIndex = stemToRowIndex.lget();
+                    final int rowIndex = stemToRowIndex.indexGet(index);
 
                     double weight = termWeighting.calculateTermWeight(stemsTf[stemIndex],
                         stemsTfByDocument[stemIndex].length / 2, documentCount);

@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -25,10 +25,11 @@ import org.carrot2.util.IntMapUtils;
 import org.fest.assertions.Assertions;
 import org.fest.util.Strings;
 
-import com.carrotsearch.hppc.IntIntOpenHashMap;
+import com.carrotsearch.hppc.IntIntHashMap;
 import com.carrotsearch.hppc.procedures.IntIntProcedure;
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
+
+import org.carrot2.shaded.guava.common.base.MoreObjects;
+import org.carrot2.shaded.guava.common.collect.Lists;
 
 /**
  * Fest-style assertions on the content of {@link PreprocessingContext}.
@@ -513,7 +514,8 @@ nextPhrase:
                     image != null ? image.toCharArray() : null,
                     context.allTokens.image[tokenIndex]) == 0)
                     .as("token image equality: " + image + " vs. " + 
-                    new String(Objects.firstNonNull(context.allTokens.image[tokenIndex], "<null>".toCharArray())))
+                    new String(
+                        MoreObjects.firstNonNull(context.allTokens.image[tokenIndex], "<null>".toCharArray())))
                     .isTrue();
             return this;
         }
@@ -550,7 +552,7 @@ nextPhrase:
         AllPhrases allPhrases = context.allPhrases;
         for (int index = 0; index < allPhrases.size(); index++)
         {
-            IntIntOpenHashMap realTfByDocuments = countManually(context, allPhrases.wordIndices[index]);
+            IntIntHashMap realTfByDocuments = countManually(context, allPhrases.wordIndices[index]);
             final int realTf = realTfByDocuments.forEach(new IntIntProcedure()
             {
                 int tf;
@@ -568,7 +570,7 @@ nextPhrase:
             Assertions
                 .assertThat(
                     IntMapUtils.flattenSortedByKey(IntMapUtils.addAllFromFlattened(
-                        new IntIntOpenHashMap(), allPhrases.tfByDocument[index])))
+                        new IntIntHashMap(), allPhrases.tfByDocument[index])))
                 .as("Phrase: " + allPhrases.getPhrase(index))
                 .isEqualTo(IntMapUtils.flattenSortedByKey(realTfByDocuments));
         }
@@ -577,9 +579,9 @@ nextPhrase:
     /**
      * Manually and naively count doc->tf for the given word sequence.
      */
-    private IntIntOpenHashMap countManually(PreprocessingContext context, int [] phraseWordIndices)
+    private IntIntHashMap countManually(PreprocessingContext context, int [] phraseWordIndices)
     {
-        IntIntOpenHashMap tfByDoc = new IntIntOpenHashMap();
+        IntIntHashMap tfByDoc = new IntIntHashMap();
         AllTokens allTokens = context.allTokens;
 outer:
         for (int i = allTokens.wordIndex.length - phraseWordIndices.length; --i >=0 ;)

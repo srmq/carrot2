@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -26,7 +26,7 @@ import org.carrot2.workbench.core.helpers.Utils;
 import org.carrot2.workbench.editors.*;
 import org.carrot2.workbench.editors.impl.MappedValueComboEditor;
 
-import com.google.common.collect.*;
+import org.carrot2.shaded.guava.common.collect.*;
 
 /**
  * Editor for mapped values (enumerated types and unrestricted strings with enum hints).

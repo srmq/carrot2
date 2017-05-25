@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -97,7 +97,7 @@ public class DirectoryEditor extends AttributeEditorAdapter
      */
     private void createFileButton(Composite holder)
     {
-        final Image image = EditorsPlugin.getImageDescriptor("icons/open_folder.gif")
+        final Image image = EditorsPlugin.getImageDescriptor("icons/open_folder.png")
             .createImage();
         disposeBin.add(image);
 
@@ -120,7 +120,7 @@ public class DirectoryEditor extends AttributeEditorAdapter
      */
     private void createClearButton(Composite holder)
     {
-        final Image image = EditorsPlugin.getImageDescriptor("icons/clear.gif")
+        final Image image = EditorsPlugin.getImageDescriptor("icons/clear.png")
             .createImage();
         disposeBin.add(image);
 

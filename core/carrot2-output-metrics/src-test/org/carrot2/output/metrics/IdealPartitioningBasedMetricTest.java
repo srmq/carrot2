@@ -2,7 +2,7 @@
 /*
  * Carrot2 project.
  *
- * Copyright (C) 2002-2014, Dawid Weiss, Stanisław Osiński.
+ * Copyright (C) 2002-2016, Dawid Weiss, Stanisław Osiński.
  * All rights reserved.
  *
  * Refer to the full license file "carrot2.LICENSE"
@@ -19,8 +19,8 @@ import org.carrot2.core.Document;
 import org.carrot2.util.tests.CarrotTestCase;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import org.carrot2.shaded.guava.common.collect.Lists;
+import org.carrot2.shaded.guava.common.collect.Sets;
 
 /**
  * Test cases for {@link IClusteringMetric}.
@@ -55,7 +55,7 @@ public class IdealPartitioningBasedMetricTest extends CarrotTestCase
         final String [] clusterMetricKeys = getClusterMetricKeys();
         for (String metricKey : clusterMetricKeys)
         {
-            assertThat(c1.getAttribute(metricKey)).isNull();
+            assertThat((Object) c1.getAttribute(metricKey)).isNull();
         }
     }
 
