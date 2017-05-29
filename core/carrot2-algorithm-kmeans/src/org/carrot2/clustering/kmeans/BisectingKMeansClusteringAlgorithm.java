@@ -12,6 +12,7 @@
 
 package org.carrot2.clustering.kmeans;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -67,6 +68,7 @@ import org.carrot2.mahout.math.matrix.DoubleMatrix2D;
 import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix1D;
 import org.carrot2.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.shaded.guava.common.collect.Lists;
+
 
 /**
  * A very simple implementation of bisecting k-means clustering. Unlike other algorithms
@@ -170,6 +172,24 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
     @ImplementingClasses(classes = {}, strict = false)
     @Level(AttributeLevel.ADVANCED)
     public IPreprocessingPipeline preprocessingPipeline = new BasicPreprocessingPipeline();
+    
+	/**
+	 * If initial partition should be random. If <code>true</code>, elements
+	 * will be in the beginning randomly assigned to partitions, which means
+	 * that subsequent runs of this algorithm may give different results (different local
+	 * minima). If false, elements are at the beginning are always assigned to
+	 * the same partition (index modulo number of partitions), which means that
+	 * multiple runs with the same data set always will arrive at the same local
+	 * minimum.
+	 */
+    @Processing
+    @Input
+    @Attribute
+    @Group(GROUP_KMEANS)
+    @Level(AttributeLevel.ADVANCED)
+    @Label("Initial random assignment")
+    public boolean useInitialRandomAssignment = false;
+    
 
     /**
      * Term-document matrix builder for the algorithm, contains bindable attributes.
@@ -190,6 +210,15 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
      * A helper for performing multilingual clustering.
      */
     public final MultilingualClustering multilingualClustering = new MultilingualClustering();
+    
+    private class SplitResult {
+    	private IntArrayList indices;
+    	private double score;
+    	private SplitResult(IntArrayList indices, double score) {
+    		this.indices = indices;
+    		this.score = score;
+    	}
+    }
 
     @Override
     public void process() throws ProcessingException
@@ -247,7 +276,6 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
                 preprocessingContext);
             final ReducedVectorSpaceModelContext reducedVsmContext = new ReducedVectorSpaceModelContext(
                 vsmContext);
-
             matrixBuilder.buildTermDocumentMatrix(vsmContext);
             matrixBuilder.buildTermPhraseMatrix(vsmContext);
 
@@ -275,7 +303,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
             {
                 columns.add(c);
             }
-            final List<IntArrayList> rawClusters = Lists.newArrayList();
+            final List<SplitResult> rawClusters = Lists.newArrayList();
             rawClusters.addAll(split(partitionCount, tdMatrix, columns, maxIterations));
             Collections.sort(rawClusters, BY_SIZE_DESCENDING);
             
@@ -283,7 +311,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
             while (rawClusters.size() < clusterCount && largestIndex < rawClusters.size())
             {
                 // Find largest cluster to split
-                IntArrayList largest = rawClusters.get(largestIndex);
+                IntArrayList largest = rawClusters.get(largestIndex).indices;
                 if (largest.size() <= partitionCount * 2) 
                 {
                     // No cluster is large enough to produce a meaningful
@@ -292,7 +320,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
                     break;
                 }
 
-                final List<IntArrayList> split = split(partitionCount, tdMatrix, largest,
+                final List<SplitResult> split = split(partitionCount, tdMatrix, largest,
                     maxIterations);
                 if (split.size() > 1)
                 {
@@ -311,7 +339,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
             {
                 final Cluster cluster = new Cluster();
 
-                final IntArrayList rawCluster = rawClusters.get(i);
+                final IntArrayList rawCluster = rawClusters.get(i).indices;
                 if (rawCluster.size() > 1)
                 {
                     cluster.addPhrases(getLabels(rawCluster,
@@ -322,6 +350,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
                     {
                         cluster.addDocuments(documents.get(rawCluster.get(j)));
                     }
+                    cluster.setScore(rawClusters.get(i).score);
                     clusters.add(cluster);
                 }
             }
@@ -331,13 +360,13 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
         Cluster.appendOtherTopics(documents, clusters);
     }
 
-    private static final Comparator<IntArrayList> BY_SIZE_DESCENDING = new Comparator<IntArrayList>()
+    private static final Comparator<SplitResult> BY_SIZE_DESCENDING = new Comparator<SplitResult>()
     {
         @Override
-        public int compare(IntArrayList o1, IntArrayList o2)
+        public int compare(SplitResult o1, SplitResult o2)
         {
             // We don't expect very large sizes here.
-            return o2.size() - o1.size();
+            return o2.indices.size() - o1.indices.size();
         }
     };
     
@@ -391,7 +420,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
      * Splits the input documents into the specified number of partitions using the
      * standard k-means routine.
      */
-    private List<IntArrayList> split(int partitions, DoubleMatrix2D input,
+    private List<SplitResult> split(int partitions, DoubleMatrix2D input,
         IntArrayList columns, int iterations)
     {
         // Prepare selected matrix
@@ -404,15 +433,27 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
         }
 
         // Prepare results holders
-        List<IntArrayList> result = Lists.newArrayList();
-        List<IntArrayList> previousResult = null;
+        List<SplitResult> result = Lists.newArrayList();
+        List<SplitResult> previousResult = null;
         for (int i = 0; i < partitions; i++)
         {
-            result.add(new IntArrayList(selected.columns()));
+            result.add(new SplitResult(new IntArrayList(selected.columns()), 0.0));
         }
-        for (int i = 0; i < selected.columns(); i++) 
-        {
-            result.get(i % partitions).add(i);
+        if (!useInitialRandomAssignment) {
+	        for (int i = 0; i < selected.columns(); i++) 
+	        {
+	            result.get(i % partitions).indices.add(i);
+	        }
+        } else {
+        	ArrayList<Integer> indices = new ArrayList<Integer>(selected.columns());
+        	for (int i = 0; i < selected.columns(); i++) {
+        		indices.add(i);
+        	}
+        	Collections.shuffle(indices);
+	        for (int i = 0; i < selected.columns(); i++) 
+	        {
+	            result.get(indices.get(i).intValue() % partitions).indices.add(i);
+	        }
         }
 
         // Matrices for centroids and document-centroid similarities
@@ -427,7 +468,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
             // Update centroids
             for (int i = 0; i < result.size(); i++)
             {
-                final IntArrayList cluster = result.get(i);
+                final IntArrayList cluster = result.get(i).indices;
                 for (int k = 0; k < selected.rows(); k++)
                 {
                     double sum = 0;
@@ -443,7 +484,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
             result = Lists.newArrayList();
             for (int i = 0; i < partitions; i++)
             {
-                result.add(new IntArrayList(selected.columns()));
+                result.add(new SplitResult(new IntArrayList(selected.columns()), 0.0));
             }
 
             // Calculate similarity to centroids
@@ -462,8 +503,10 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
                         maxRow = r;
                     }
                 }
+                final double newScoreForPartition = result.get(maxRow).score + max;
+                result.get(maxRow).score = newScoreForPartition;
 
-                result.get(maxRow).add(c);
+                result.get(maxRow).indices.add(c);
             }
 
             if (ObjectUtils.equals(previousResult, result))
@@ -474,9 +517,9 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
         }
 
         // Map the results back to the global indices
-        for (Iterator<IntArrayList> it = result.iterator(); it.hasNext();)
+        for (Iterator<SplitResult> it = result.iterator(); it.hasNext();)
         {
-            final IntArrayList cluster = it.next();
+            final IntArrayList cluster = it.next().indices;
             if (cluster.isEmpty())
             {
                 it.remove();
@@ -489,6 +532,7 @@ public class BisectingKMeansClusteringAlgorithm extends ProcessingComponentBase 
                 }
             }
         }
+
 
         return result;
     }
