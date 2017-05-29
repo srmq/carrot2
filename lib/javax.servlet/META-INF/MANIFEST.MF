@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Specification-Version: 2.5
+Bundle-ClassPath: servlet-api-2.5.jar
+Export-Package: javax.servlet.http;uses:="javax.servlet";version="2.5"
+ ,javax.servlet;version="2.5",javax.servlet.resources;version="2.5",ja
+ vax.servlet.jsp.resources;version="2.5"
+Bundle-Version: 2.5
+Ignore-Package: javax.servlet.http,javax.servlet,javax.servlet.resourc
+ es,javax.servlet.jsp.resources
+Bundle-Name: Servlet Specification 2.5 API (Carrot 2)
+Bundle-Description: Servlet Specification 2.5 API
+Bundle-Vendor: Carrot2.org (Mort Bay Consulting)
+Bundle-SymbolicName: javax.servlet
+
